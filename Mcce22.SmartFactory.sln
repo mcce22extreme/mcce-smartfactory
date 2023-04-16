@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mcce22.SmartFactory.Client", "src\Mcce22.SmartFactory.Client\Mcce22.SmartFactory.Client.csproj", "{C794D739-5CAB-4835-BE64-3B74004F2B86}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mcce22.SmartFactory.Controller", "src\Mcce22.SmartFactory.Controller\Mcce22.SmartFactory.Controller.csproj", "{C2AD329D-694E-4F00-95BC-D85BE2DF2647}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C794D739-5CAB-4835-BE64-3B74004F2B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C794D739-5CAB-4835-BE64-3B74004F2B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C794D739-5CAB-4835-BE64-3B74004F2B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C794D739-5CAB-4835-BE64-3B74004F2B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2AD329D-694E-4F00-95BC-D85BE2DF2647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AD329D-694E-4F00-95BC-D85BE2DF2647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AD329D-694E-4F00-95BC-D85BE2DF2647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AD329D-694E-4F00-95BC-D85BE2DF2647}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C8F19E5-6C2F-4202-9B82-F6EA332825B8}
+	EndGlobalSection
+EndGlobal

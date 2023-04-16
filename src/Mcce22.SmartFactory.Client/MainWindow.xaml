@@ -1,0 +1,33 @@
+﻿<mah:MetroWindow
+    x:Class="Mcce22.SmartFactory.Client.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:v="clr-namespace:Mcce22.SmartFactory.Client.Views"
+    xmlns:vm="clr-namespace:Mcce22.SmartFactory.Client.ViewModels"
+    Title="MCCE22 Smart Factory"
+    Width="1024"
+    Height="768"
+    WindowTitleBrush="#333"
+    mc:Ignorable="d">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <iconPacks:PackIconMaterial
+                Width="16"
+                Height="16"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource IdealForegroundColorBrush}"
+                Kind="Factory" />
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:FactoryViewModel}">
+            <v:FactoryView />
+        </DataTemplate>
+    </Window.Resources>
+    <ContentControl Content="{Binding ActiveContent}" />
+</mah:MetroWindow>

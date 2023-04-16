@@ -1,0 +1,488 @@
+﻿<UserControl
+    x:Class="Mcce22.SmartFactory.Client.Views.FactoryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Mcce22.SmartFactory.Client.Converters"
+    xmlns:ctrl="clr-namespace:Mcce22.SmartFactory.Client.Controls"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    Margin="0"
+    Padding="0">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="DefaultSensorBackgroundBrush" Color="#333" />
+        <SolidColorBrush x:Key="DefaultSensorBorderBrush" Color="#444" />
+        <SolidColorBrush x:Key="ActiveSensorBackgroundBrush" Color="Green" />
+        <SolidColorBrush x:Key="ActiveSensorBorderBrush" Color="DarkGreen" />
+        <SolidColorBrush x:Key="PowerButtonDefaultForegroundBrush" Color="#444" />
+        <SolidColorBrush x:Key="PowerButtonActiveForegroundBrush" Color="Yellow" />
+
+        <conv:StateToBrushConverter x:Key="StateToBrushConverter" />
+        <conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+
+        <Style
+            x:Key="ToolbarButtonStyle"
+            BasedOn="{StaticResource MahApps.Styles.Button.Circle}"
+            TargetType="Button">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ctrl:FactoryButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="{StaticResource DefaultSensorBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource DefaultSensorBorderBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsActive" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ActiveSensorBackgroundBrush}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ActiveSensorBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ctrl:FactorySensor">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontSize" Value="7" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="{StaticResource DefaultSensorBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource DefaultSensorBorderBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border
+                            x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsActive" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ActiveSensorBackgroundBrush}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ActiveSensorBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Storyboard
+            x:Key="OpenDoorStoryboard"
+            Completed="OnOpenDoorCompleted"
+            FillBehavior="Stop">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="0"
+                Duration="0:0:2" />
+        </Storyboard>
+
+        <Storyboard
+            x:Key="CloseDoorStoryboard"
+            Completed="OnCloseDoorCompleted"
+            FillBehavior="Stop">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="130"
+                Duration="0:0:2" />
+        </Storyboard>
+
+        <Style x:Key="DoorStyle" TargetType="Rectangle">
+            <Setter Property="Height" Value="130" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Door.Q3Active}" Value="true" />
+                        <Condition Binding="{Binding Door.EmergencyOpen}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="Open" Storyboard="{StaticResource OpenDoorStoryboard}" />
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="Open" />
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding Door.Q4Active}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="Close" Storyboard="{StaticResource CloseDoorStoryboard}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="Close" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Door.EmergencyOpen}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <PauseStoryboard BeginStoryboardName="Close" />
+                        <BeginStoryboard x:Name="OpenEmergancy" Storyboard="{StaticResource OpenDoorStoryboard}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="OpenEmergancy" />
+                        <StopStoryboard BeginStoryboardName="Close" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Storyboard
+            x:Key="LifterUpUpStoryboard"
+            Completed="OnLifterUpCompleted"
+            FillBehavior="Stop">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="30"
+                Duration="0:0:2" />
+        </Storyboard>
+
+        <Storyboard
+            x:Key="LifterDownStoryboard"
+            Completed="OnLifterDownCompleted"
+            FillBehavior="Stop">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="130"
+                Duration="0:0:2" />
+        </Storyboard>
+
+        <Style x:Key="PlatformStyle" TargetType="Rectangle">
+            <Setter Property="Canvas.Top" Value="485" />
+        </Style>
+
+        <Style x:Key="LifterStyle" TargetType="Rectangle">
+            <Setter Property="Height" Value="20" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Platform.Q1Active}" Value="true" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="LifterUp" Storyboard="{StaticResource LifterUpUpStoryboard}" />
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="LifterUp" />
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding Platform.Q2Active}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="LifterDown" Storyboard="{StaticResource LifterDownStoryboard}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="LifterDown" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <!--<DataTrigger Binding="{Binding Door.EmergencyOpen}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <PauseStoryboard BeginStoryboardName="Close" />
+                        <BeginStoryboard x:Name="OpenEmergancy" Storyboard="{StaticResource OpenDoorStoryboard}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="OpenEmergancy" />
+                        <StopStoryboard BeginStoryboardName="Close" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>-->
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Viewbox
+            x:Name="ViewBox"
+            Grid.Row="1"
+            IsEnabled="{Binding FactoryStarted}"
+            Stretch="Fill"
+            StretchDirection="Both">
+            <Canvas
+                x:Name="CanvasFactory"
+                Width="1024"
+                Height="600">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="/Images/smart_factory.png" Stretch="Fill" />
+                </Canvas.Background>
+                <!--  Door  -->
+                <!--  S3  -->
+                <ctrl:FactoryButton
+                    x:Name="S3"
+                    Canvas.Left="509"
+                    Canvas.Top="470"
+                    Width="22"
+                    Height="25"
+                    Command="{Binding Door.S3ActivatedCommand}"
+                    IsActive="{Binding Door.S3Active}">
+                    <iconPacks:FontAwesome
+                        Width="8"
+                        Height="8"
+                        Kind="KeySolid" />
+                </ctrl:FactoryButton>
+                <!--  S22  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="509"
+                    Canvas.Top="423"
+                    Width="22"
+                    Height="25"
+                    Command="{Binding Door.S22ActivatedCommand}"
+                    IsActive="{Binding Door.S22Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="10"
+                        Kind="WifiSolid" />
+                </ctrl:FactoryButton>
+                <!--  B3  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="673"
+                    Canvas.Top="443"
+                    Width="22"
+                    Height="20"
+                    Content="B3"
+                    IsActive="{Binding Door.B3Active}" />
+                <!--  B4  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="673"
+                    Canvas.Top="553"
+                    Width="22"
+                    Height="18"
+                    Content="B4"
+                    IsActive="{Binding Door.B4Active}" />
+                <!--  B5_1  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="509"
+                    Canvas.Top="500"
+                    Width="22"
+                    Height="20"
+                    Content="B5"
+                    IsActive="{Binding Door.B5Active}" />
+                <!--  B5_2  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="701"
+                    Canvas.Top="497"
+                    Width="23"
+                    Height="27"
+                    Command="{Binding Door.B5ActivatedCommand}"
+                    Foreground="DarkOrange"
+                    IsActive="{Binding Door.B5Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="12"
+                        Kind="BoltSolid" />
+                </ctrl:FactoryButton>
+                <!--  Q3  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="712"
+                    Canvas.Top="451"
+                    Width="25"
+                    Height="18"
+                    Content="Q3"
+                    IsActive="{Binding Door.Q3Active}" />
+                <!--  Q4  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="712"
+                    Canvas.Top="471"
+                    Width="25"
+                    Height="18"
+                    Content="Q4"
+                    IsActive="{Binding Door.Q4Active}" />
+                <!--  Door  -->
+                <Rectangle
+                    x:Name="Door"
+                    Canvas.Left="532"
+                    Canvas.Top="442"
+                    Width="140"
+                    Style="{StaticResource DoorStyle}">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/smart_factory_door.png" Stretch="UniformToFill" />
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <!--  Lifting Platform  -->
+                <!--  Q1  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="403"
+                    Canvas.Top="505"
+                    Width="25"
+                    Height="18"
+                    Content="Q1"
+                    IsActive="{Binding Platform.Q1Active}" />
+                <!--  Q2  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="403"
+                    Canvas.Top="526"
+                    Width="25"
+                    Height="18"
+                    Content="Q2"
+                    IsActive="{Binding Platform.Q2Active}" />
+                <!--  B1  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="365"
+                    Canvas.Top="370"
+                    Width="22"
+                    Height="18"
+                    Content="B1"
+                    IsActive="{Binding Platform.B1Active}" />
+                <!--  B2  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="365"
+                    Canvas.Top="549"
+                    Width="22"
+                    Height="18"
+                    Content="B2"
+                    IsActive="{Binding Platform.B2Active}" />
+                <!--  S1  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="410"
+                    Canvas.Top="353"
+                    Width="21"
+                    Height="25"
+                    Command="{Binding Platform.B5ActivatedCommand}"
+                    IsActive="{Binding Platform.B5Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="12"
+                        Kind="ArrowUpSolid" />
+                </ctrl:FactoryButton>
+                <!--  S21  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="410"
+                    Canvas.Top="382"
+                    Width="21"
+                    Height="25"
+                    Command="{Binding Platform.S21ActivatedCommand}"
+                    Foreground="Red"
+                    IsActive="{Binding Platform.B21Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="12"
+                        Kind="DotCircleRegular" />
+                </ctrl:FactoryButton>
+                <!--  S2  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="410"
+                    Canvas.Top="410"
+                    Width="21"
+                    Height="25"
+                    Command="{Binding Platform.S2ActivatedCommand}"
+                    IsActive="{Binding Platform.S2Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="12"
+                        Kind="ArrowDownSolid" />
+                </ctrl:FactoryButton>
+                <!--  Platform  -->
+                <Rectangle
+                    x:Name="Platform"
+                    Canvas.Left="295"
+                    Canvas.Top="485"
+                    Width="50"
+                    Height="80"
+                    Style="{StaticResource PlatformStyle}">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/smart_factory_platform.png" Stretch="Fill" />
+                    </Rectangle.Fill>
+                </Rectangle>
+                <!--  Lifter  -->
+                <Rectangle
+                    x:Name="Lifter"
+                    Canvas.Left="312"
+                    Canvas.Top="565"
+                    Width="14"
+                    Height="08"
+                    Style="{StaticResource LifterStyle}">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/smart_factory_lifter.png" Stretch="Fill" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Canvas>
+        </Viewbox>
+        <Button
+            Grid.Row="1"
+            Margin="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Background="#333"
+            BorderThickness="1"
+            Command="{Binding ResetFactoryCommand}"
+            Foreground="White"
+            Style="{StaticResource ToolbarButtonStyle}">
+            <iconPacks:FontAwesome
+                Width="30"
+                Height="20"
+                Kind="UndoAltSolid" />
+        </Button>
+        <Grid
+            Grid.Row="1"
+            Background="#444"
+            Opacity="0.9"
+            Visibility="{Binding FactoryStarted, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <Button
+                Width="100"
+                Height="100"
+                Command="{Binding StartFactoryCommand}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource ToolbarButtonStyle}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FactoryStarting}" Value="True">
+                                <Setter Property="Foreground" Value="Yellow" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <iconPacks:FontAwesome
+                    Width="40"
+                    Height="40"
+                    Kind="BoltSolid" />
+            </Button>
+        </Grid>
+        <GridSplitter
+            Grid.Row="2"
+            HorizontalAlignment="Stretch"
+            Background="Gray" />
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Command="{Binding ClearMessageLogCommand}"
+                    Foreground="White"
+                    Style="{StaticResource ToolbarButtonStyle}">
+                    <iconPacks:FontAwesome Kind="TrashSolid" />
+                </Button>
+            </StackPanel>
+            <TextBox
+                Grid.Row="1"
+                IsReadOnly="True"
+                Text="{Binding MessageLog}"
+                TextChanged="OnTextChanged"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+        </Grid>
+    </Grid>
+</UserControl>
