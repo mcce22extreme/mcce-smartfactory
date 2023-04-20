@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>smart_factory.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,10 @@
     <None Remove="Images\smart_factory_door.png" />
     <None Remove="Images\smart_factory_lifter.png" />
     <None Remove="Images\smart_factory_platform.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="smart_factory.ico" />
   </ItemGroup>
 
   <ItemGroup>

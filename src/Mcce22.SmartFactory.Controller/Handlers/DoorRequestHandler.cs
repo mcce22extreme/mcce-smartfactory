@@ -16,6 +16,8 @@ namespace Mcce22.SmartFactory.Controller.Handlers
         private const string DEVICE_Q3 = "q3";
         private const string DEVICE_Q4 = "q4";
 
+        protected override string Topic => Topics.DOOR;
+
         public DoorRequestHandler(string endpointAddress)
             : base(endpointAddress)
         {

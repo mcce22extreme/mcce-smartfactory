@@ -146,64 +146,52 @@
             </Style.Triggers>
         </Style>
 
-
         <Storyboard
-            x:Key="LifterUpUpStoryboard"
+            x:Key="LifterUpStoryboard"
             Completed="OnLifterUpCompleted"
-            FillBehavior="Stop">
+            FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
-                To="30"
-                Duration="0:0:2" />
+                To="160"
+                Duration="0:0:8" />
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="413"
+                Duration="0:0:8" />
         </Storyboard>
 
         <Storyboard
             x:Key="LifterDownStoryboard"
             Completed="OnLifterDownCompleted"
-            FillBehavior="Stop">
+            FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
-                To="130"
-                Duration="0:0:2" />
+                To="8"
+                Duration="0:0:8" />
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="565"
+                Duration="0:0:8" />
         </Storyboard>
 
-        <Style x:Key="PlatformStyle" TargetType="Rectangle">
-            <Setter Property="Canvas.Top" Value="485" />
-        </Style>
+        <Storyboard x:Key="PlatformUpStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="333"
+                Duration="0:0:8" />
+        </Storyboard>
+
+        <Storyboard x:Key="PlatformDownStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="485"
+                Duration="0:0:8" />
+        </Storyboard>
 
         <Style x:Key="LifterStyle" TargetType="Rectangle">
-            <Setter Property="Height" Value="20" />
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Platform.Q1Active}" Value="true" />
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.EnterActions>
-                        <BeginStoryboard x:Name="LifterUp" Storyboard="{StaticResource LifterUpUpStoryboard}" />
-                    </MultiDataTrigger.EnterActions>
-                    <MultiDataTrigger.ExitActions>
-                        <StopStoryboard BeginStoryboardName="LifterUp" />
-                    </MultiDataTrigger.ExitActions>
-                </MultiDataTrigger>
-                <DataTrigger Binding="{Binding Platform.Q2Active}" Value="True">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard x:Name="LifterDown" Storyboard="{StaticResource LifterDownStoryboard}" />
-                    </DataTrigger.EnterActions>
-                    <DataTrigger.ExitActions>
-                        <StopStoryboard BeginStoryboardName="LifterDown" />
-                    </DataTrigger.ExitActions>
-                </DataTrigger>
-                <!--<DataTrigger Binding="{Binding Door.EmergencyOpen}" Value="True">
-                    <DataTrigger.EnterActions>
-                        <PauseStoryboard BeginStoryboardName="Close" />
-                        <BeginStoryboard x:Name="OpenEmergancy" Storyboard="{StaticResource OpenDoorStoryboard}" />
-                    </DataTrigger.EnterActions>
-                    <DataTrigger.ExitActions>
-                        <StopStoryboard BeginStoryboardName="OpenEmergancy" />
-                        <StopStoryboard BeginStoryboardName="Close" />
-                    </DataTrigger.ExitActions>
-                </DataTrigger>-->
-            </Style.Triggers>
+            <Setter Property="Height" Value="8" />
+            <Setter Property="Canvas.Top" Value="565" />
+            <Style.Triggers />
         </Style>
 
     </UserControl.Resources>
@@ -360,8 +348,8 @@
                     Canvas.Top="353"
                     Width="21"
                     Height="25"
-                    Command="{Binding Platform.B5ActivatedCommand}"
-                    IsActive="{Binding Platform.B5Active}">
+                    Command="{Binding Platform.S1ActivatedCommand}"
+                    IsActive="{Binding Platform.S1Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -375,7 +363,7 @@
                     Height="25"
                     Command="{Binding Platform.S21ActivatedCommand}"
                     Foreground="Red"
-                    IsActive="{Binding Platform.B21Active}">
+                    IsActive="{Binding Platform.S21Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -394,14 +382,26 @@
                         Height="12"
                         Kind="ArrowDownSolid" />
                 </ctrl:FactoryButton>
+                <ctrl:FactoryButton
+                    Canvas.Left="441"
+                    Canvas.Top="544"
+                    Width="23"
+                    Height="26"
+                    Command="{Binding Platform.F1ActivatedCommand}"
+                    Foreground="DarkOrange"
+                    IsActive="{Binding Platform.F1Active}">
+                    <iconPacks:FontAwesome
+                        Width="12"
+                        Height="12"
+                        Kind="BoltSolid" />
+                </ctrl:FactoryButton>
                 <!--  Platform  -->
                 <Rectangle
                     x:Name="Platform"
                     Canvas.Left="295"
                     Canvas.Top="485"
                     Width="50"
-                    Height="80"
-                    Style="{StaticResource PlatformStyle}">
+                    Height="80">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="/Images/smart_factory_platform.png" Stretch="Fill" />
                     </Rectangle.Fill>
@@ -410,14 +410,25 @@
                 <Rectangle
                     x:Name="Lifter"
                     Canvas.Left="312"
-                    Canvas.Top="565"
                     Width="14"
-                    Height="08"
                     Style="{StaticResource LifterStyle}">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="/Images/smart_factory_lifter.png" Stretch="Fill" />
                     </Rectangle.Fill>
                 </Rectangle>
+                <!--  Press  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="593"
+                    Canvas.Top="198"
+                    Width="22"
+                    Height="26"
+                    Command="{Binding Platform.S2ActivatedCommand}"
+                    IsActive="{Binding Platform.S2Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Kind="HandPaperSolid" />
+                </ctrl:FactoryButton>
             </Canvas>
         </Viewbox>
         <Button

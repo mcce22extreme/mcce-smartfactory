@@ -10,6 +10,8 @@ namespace Mcce22.SmartFactory.Controller.Handlers
     {
         private static SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1,1);
 
+        protected abstract string Topic { get; }
+
         protected AmazonIotDataClient DataClient { get; }
 
         protected AmazonDynamoDBClient DynamoDBClient { get; }
@@ -38,13 +40,13 @@ namespace Mcce22.SmartFactory.Controller.Handlers
             var json = JsonConvert.SerializeObject(new RequestModel
             {
                 DeviceId = deviceId,
-                Topic = Topics.DOOR,
+                Topic = Topic,
                 Active = active
             });
 
             await DataClient.PublishAsync(new Amazon.IotData.Model.PublishRequest
             {
-                Topic = Topics.DOOR,
+                Topic = Topic,
                 Payload = new MemoryStream(Encoding.UTF8.GetBytes(json))
             });
         }

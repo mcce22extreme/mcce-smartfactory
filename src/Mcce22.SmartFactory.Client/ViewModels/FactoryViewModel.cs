@@ -142,10 +142,12 @@ namespace Mcce22.SmartFactory.Client.ViewModels
         private async Task InitializeFactory()
         {
             Door.Initialize();
+            Platform.Initialize();
 
             using var context = new DynamoDBContext(_dynamoDBClient);
 
             await context.DeleteAsync<DeviceState>(Topics.DOOR);
+            await context.DeleteAsync<DeviceState>(Topics.PLATFORM);
 
             FactoryReseted?.Invoke(this, EventArgs.Empty);
         }
@@ -200,6 +202,7 @@ namespace Mcce22.SmartFactory.Client.ViewModels
                 await _mqttClient.ConnectAsync(options, CancellationToken.None);
 
                 await _mqttClient.SubscribeAsync(Topics.DOOR);
+                await _mqttClient.SubscribeAsync(Topics.PLATFORM);
             }
         }
 
@@ -215,6 +218,9 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             {
                 case Topics.DOOR:
                     await Door.HandleRequest(request);
+                    break;
+                case Topics.PLATFORM:
+                    await Platform.HandleRequest(request);
                     break;
             }            
         }

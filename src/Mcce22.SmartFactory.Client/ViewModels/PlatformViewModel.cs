@@ -112,6 +112,22 @@ namespace Mcce22.SmartFactory.Client.ViewModels
                         await PublishMessage(DEVICE_B2, false);
                     }
                     break;
+                case DEVICE_Q2:
+                    Q2Active = request.Active;
+                    if (Q2Active)
+                    {
+                        await PublishMessage(DEVICE_B1, false);
+                    }
+                    break;
+                case DEVICE_B1:
+                    B1Active = request.Active;
+                    break;
+                case DEVICE_B2:
+                    B2Active = request.Active;
+                    break;
+                case DEVICE_F1:
+                    F1Active = request.Active;
+                    break;
             }
         }
 
@@ -125,6 +141,16 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             Q1Active = false;
             Q2Active = false;
             F1Active = false;
+        }
+
+        public async void LifterUpCompleted()
+        {
+            await PublishMessage(DEVICE_B1, true);
+        }
+
+        public async void LifterDownCompleted()
+        {
+            await PublishMessage(DEVICE_B2, true);
         }
     }
 }
