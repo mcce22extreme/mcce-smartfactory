@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Deploys the MCCE22 Smart Factory AWS environment
+
+Resources:
+  Mcce22SmartFactoryControllerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mcce22-smart-factory-controller1
+      CodeUri: '../Mcce22.SmartFactory.Controller'
+      Handler: Mcce22.SmartFactory.Controller::Mcce22.SmartFactory.Controller.Functions::HandleRequest
+      MemorySize: 256
+      Policies:
+        - AWSLambda_FullAccess
+      Role: arn:aws:iam::064088109127:role/LabRole
+      Runtime: dotnet6
+      Timeout: 30
+      Events:
+        RootGet:
+          Type: Api
+          Properties:
+            Path: /
+            Method: Any
+  DoorRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+      RuleName: DoorRule2
+      TopicRulePayload:
+        RuleDisabled: false
+        Sql: SELECT * FROM 'mcce22-smart-factory/door'
+        Actions:
+          - Lambda:
+              FunctionArn: !Ref Mcce22SmartFactoryControllerLambda
+    
