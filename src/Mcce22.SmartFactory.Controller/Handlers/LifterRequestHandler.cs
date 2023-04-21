@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Mcce22.SmartFactory.Controller.Handlers
 {
-    public class PlatformRequestHandler : RequestHandlerBase
+    public class LifterRequestHandler : RequestHandlerBase
     {
         private const string DEVICE_S1 = "s1";
         private const string DEVICE_S21 = "s21";
@@ -17,46 +17,40 @@ namespace Mcce22.SmartFactory.Controller.Handlers
         private const string DEVICE_Q2 = "q2";
         private const string DEVICE_F1 = "f1";
 
-        protected override string Topic => Topics.PLATFORM;
+        protected override string Topic => Topics.LIFTER;
 
-        public PlatformRequestHandler(string endpointAddress)
+        public LifterRequestHandler(string endpointAddress)
             : base(endpointAddress)
         {
         }
 
-        protected override async Task OnHandleRequest(RequestModel model)
+        protected override async Task OnHandleRequest(RequestModel model, DeviceState deviceState)
         {
             switch (model.DeviceId)
             {
                 case DEVICE_S1:
-                    await HandleS1Request(model);
+                    await HandleS1Request(model, deviceState);
                     break;
                 case DEVICE_S21:
-                    await HandleS21Request(model);
+                    await HandleS21Request(model, deviceState);
                     break;
                 case DEVICE_S2:
-                    await HandleS2Request(model);
+                    await HandleS2Request(model, deviceState);
                     break;
                 case DEVICE_B1:
-                    await HandleB1Request(model);
+                    await HandleB1Request(model, deviceState);
                     break;
                 case DEVICE_B2:
-                    await HandleB2Request(model);
+                    await HandleB2Request(model, deviceState);
                     break;
                 case DEVICE_F1:
-                    await HandleF1Request(model);
+                    await HandleF1Request(model, deviceState);
                     break;
             }
         }
 
-        private async Task HandleS1Request(RequestModel model)
+        private async Task HandleS1Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             if (deviceState.F1 && model.Active)
             {
                 // F1 has been triggerd => deactivate S21 again
@@ -93,20 +87,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
 
                 await PublishMessage(DEVICE_Q1, true);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleS2Request(RequestModel model)
+        private async Task HandleS2Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             if (model.Active)
             {
                 if (deviceState.S2)
@@ -136,20 +120,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
 
                 await PublishMessage(DEVICE_Q2, true);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleS21Request(RequestModel model)
+        private async Task HandleS21Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             if (deviceState.F1 && model.Active)
             {
                 // F1 has been triggerd => deactivate S21 again
@@ -178,20 +152,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                     await PublishMessage(DEVICE_S2, false);
                 }
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleF1Request(RequestModel model)
+        private async Task HandleF1Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             if (deviceState.F1 == model.Active)
             {
                 // Already same state => do nothing
@@ -206,7 +170,7 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 {
                     // deactive Q1+S1
                     deviceState.Q1 = false;
-                    deviceState.S1 = false;                    
+                    deviceState.S1 = false;
 
                     await PublishMessage(DEVICE_Q1, false);
                     await PublishMessage(DEVICE_S1, false);
@@ -222,20 +186,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                     await PublishMessage(DEVICE_S2, true);
                 }
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleB1Request(RequestModel model)
+        private async Task HandleB1Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             deviceState.B1 = model.Active;
 
             if (deviceState.B1)
@@ -247,20 +201,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 await PublishMessage(DEVICE_Q1, false);
                 await PublishMessage(DEVICE_S1, false);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleB2Request(RequestModel model)
+        private async Task HandleB2Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.PLATFORM) ?? new DeviceState { Topic = Topics.PLATFORM };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             deviceState.B2 = model.Active;
 
             if (deviceState.B2)
@@ -273,10 +217,6 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 await PublishMessage(DEVICE_Q2, false);
                 await PublishMessage(DEVICE_S2, false);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
     }
 }

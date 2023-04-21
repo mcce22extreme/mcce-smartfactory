@@ -9,10 +9,31 @@ namespace Mcce22.SmartFactory.Client.Entities
         public string Topic { get; set; }
 
         [DynamoDBProperty]
+        public bool S1 { get; set; }
+
+        [DynamoDBProperty]
+        public bool S21 { get; set; }
+
+        [DynamoDBProperty]
+        public bool S2 { get; set; }
+
+        [DynamoDBProperty]
         public bool S3 { get; set; }
 
         [DynamoDBProperty]
+        public bool S14 { get; set; }
+
+        [DynamoDBProperty]
+        public bool S15 { get; set; }
+
+        [DynamoDBProperty]
         public bool S22 { get; set; }
+
+        [DynamoDBProperty]
+        public bool B1 { get; set; }
+
+        [DynamoDBProperty]
+        public bool B2 { get; set; }
 
         [DynamoDBProperty]
         public bool B3 { get; set; }
@@ -24,9 +45,21 @@ namespace Mcce22.SmartFactory.Client.Entities
         public bool B5 { get; set; }
 
         [DynamoDBProperty]
+        public bool F1 { get; set; }
+
+        [DynamoDBProperty]
+        public bool Q1 { get; set; }
+
+        [DynamoDBProperty]
+        public bool Q2 { get; set; }
+
+        [DynamoDBProperty]
         public bool Q3 { get; set; }
 
         [DynamoDBProperty]
         public bool Q4 { get; set; }
+
+        [DynamoDBProperty]
+        public bool Q11 { get; set; }
     }
 }

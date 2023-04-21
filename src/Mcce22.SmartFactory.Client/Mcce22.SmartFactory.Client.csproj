@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\press.png" />
+    <None Remove="Images\shaft.png" />
     <None Remove="Images\smart_factory.png" />
     <None Remove="Images\smart_factory_door.png" />
     <None Remove="Images\smart_factory_lifter.png" />
@@ -20,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\press.png" />
+    <Resource Include="Images\shaft.png" />
     <Resource Include="Images\smart_factory.png" />
     <Resource Include="Images\smart_factory_door.png" />
     <Resource Include="Images\smart_factory_lifter.png" />
@@ -31,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Castle.Windsor" Version="5.1.2" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.102.27" />

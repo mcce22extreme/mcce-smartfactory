@@ -1,15 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Mcce22.SmartFactory.Client.Requests;
-using MQTTnet.Client;
+using Mcce22.SmartFactory.Client.Services;
 
 namespace Mcce22.SmartFactory.Client.ViewModels
 {
-    public class PlatformViewModel : FactoryPlantBase
+    public class LifterViewModel : FactoryPlantBase
     {
-        protected override string Topic => Topics.PLATFORM;
-
         private const string DEVICE_S1 = "s1";
         private const string DEVICE_S21 = "s21";
         private const string DEVICE_S2 = "S2";
@@ -18,6 +15,8 @@ namespace Mcce22.SmartFactory.Client.ViewModels
         private const string DEVICE_Q1 = "q1";
         private const string DEVICE_Q2 = "q2";
         private const string DEVICE_F1 = "f1";
+
+        protected override string Topic => Topics.LIFTER;
 
         private bool _s1Active;
         public bool S1Active
@@ -83,8 +82,8 @@ namespace Mcce22.SmartFactory.Client.ViewModels
 
         public RelayCommand F1ActivatedCommand { get; }
 
-        public PlatformViewModel(IMqttClient mqttClient)
-            : base(mqttClient)
+        public LifterViewModel(IMqttService mqttService)
+            : base(mqttService)
         {
             S1ActivatedCommand = new RelayCommand(async () => await PublishMessage(DEVICE_S1, true));
             S21ActivatedCommand = new RelayCommand(async () => await PublishMessage(DEVICE_S21, true));
@@ -92,7 +91,19 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             F1ActivatedCommand = new RelayCommand(async () => await PublishMessage(DEVICE_F1, true));
         }
 
-        public override async Task HandleRequest(RequestModel request)
+        public override void Initialize()
+        {
+            S1Active = false;
+            S21Active = false;
+            S2Active = false;
+            B1Active = false;
+            B2Active = true;
+            Q1Active = false;
+            Q2Active = false;
+            F1Active = false;
+        }
+
+        public override async Task HandleRequest(MessageModel request)
         {
             switch (request.DeviceId)
             {
@@ -129,19 +140,7 @@ namespace Mcce22.SmartFactory.Client.ViewModels
                     F1Active = request.Active;
                     break;
             }
-        }
-
-        public override void Initialize()
-        {
-            S1Active = false;
-            S21Active = false;
-            S2Active = false;
-            B1Active = false;
-            B2Active = true;
-            Q1Active = false;
-            Q2Active = false;
-            F1Active = false;
-        }
+        }       
 
         public async void LifterUpCompleted()
         {

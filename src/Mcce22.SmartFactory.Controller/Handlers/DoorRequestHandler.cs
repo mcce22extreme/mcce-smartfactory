@@ -1,8 +1,5 @@
-﻿using Amazon.DynamoDBv2.DataModel;
-using Amazon.Lambda.Core;
-using Mcce22.SmartFactory.Controller.Entities;
+﻿using Mcce22.SmartFactory.Controller.Entities;
 using Mcce22.SmartFactory.Controller.Models;
-using Newtonsoft.Json;
 
 namespace Mcce22.SmartFactory.Controller.Handlers
 {
@@ -23,34 +20,28 @@ namespace Mcce22.SmartFactory.Controller.Handlers
         {
         }
 
-        protected override async Task OnHandleRequest(RequestModel model)
+        protected override async Task OnHandleRequest(RequestModel model, DeviceState deviceState)
         {
             switch (model.DeviceId)
             {
                 case DEVICE_S3:
                 case DEVICE_S22:
-                    await HandleS3_S22Request(model);
+                    await HandleS3_S22Request(model, deviceState);
                     break;
                 case DEVICE_B3:
-                    await HandleB3Request(model);
+                    await HandleB3Request(model, deviceState);
                     break;
                 case DEVICE_B4:
-                    await HandleB4Request(model);
+                    await HandleB4Request(model, deviceState);
                     break;
                 case DEVICE_B5:
-                    await HandleB5Request(model);
+                    await HandleB5Request(model, deviceState);
                     break;
             }
         }
 
-        private async Task HandleB5Request(RequestModel model)
+        private async Task HandleB5Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.DOOR) ?? new DeviceState { Topic = Topics.DOOR };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             deviceState.B5 = model.Active;
 
             if (model.Active && !(deviceState.B3 || deviceState.B4))
@@ -71,20 +62,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 }
             }
 
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
-
         }
 
-        private async Task HandleB3Request(RequestModel model)
+        private async Task HandleB3Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.DOOR) ?? new DeviceState { Topic = Topics.DOOR };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             deviceState.B3 = model.Active;
 
             if (deviceState.B3)
@@ -96,20 +77,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 await PublishMessage(DEVICE_S3, false);
                 await PublishMessage(DEVICE_S22, false);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleB4Request(RequestModel model)
+        private async Task HandleB4Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.DOOR) ?? new DeviceState { Topic = Topics.DOOR };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             deviceState.B4 = model.Active;
 
             if (deviceState.B4)
@@ -122,21 +93,10 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 await PublishMessage(DEVICE_S3, false);
                 await PublishMessage(DEVICE_S22, false);
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
 
-        private async Task HandleS3_S22Request(RequestModel model)
+        private async Task HandleS3_S22Request(RequestModel model, DeviceState deviceState)
         {
-            using var context = new DynamoDBContext(DynamoDBClient);
-
-            // Load device states
-            var deviceState = await context.LoadAsync<DeviceState>(Topics.DOOR) ?? new DeviceState { Topic = Topics.DOOR };
-
-            LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
-
             if (model.Active)
             {
                 if (deviceState.S3 || deviceState.S22)
@@ -192,10 +152,6 @@ namespace Mcce22.SmartFactory.Controller.Handlers
             {
                 deviceState.S3 = deviceState.S22 = false;
             }
-
-            LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
-
-            await context.SaveAsync(deviceState);
         }
     }
 }

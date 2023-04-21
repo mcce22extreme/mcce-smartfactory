@@ -1,6 +1,6 @@
 ﻿namespace Mcce22.SmartFactory.Client.Requests
 {
-    public class RequestModel
+    public class MessageModel
     {
         public string DeviceId { get; set; }
 

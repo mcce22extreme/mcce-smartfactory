@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Mcce22.SmartFactory.Client.Requests;
-using MQTTnet.Client;
+using Mcce22.SmartFactory.Client.Services;
 
 namespace Mcce22.SmartFactory.Client.ViewModels
 {
@@ -79,8 +79,8 @@ namespace Mcce22.SmartFactory.Client.ViewModels
 
         public RelayCommand B5ActivatedCommand { get; }
 
-        public DoorViewModel(IMqttClient mqttClient)
-            : base(mqttClient)
+        public DoorViewModel(IMqttService mqttService)
+            : base(mqttService)
         {
             S3ActivatedCommand = new RelayCommand(S3Activated);
             S22ActivatedCommand = new RelayCommand(S22Activated);
@@ -102,7 +102,7 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             await PublishMessage(DEVICE_B5, !B5Active);
         }
 
-        public override async Task HandleRequest(RequestModel request)
+        public override async Task HandleRequest(MessageModel request)
         {
             switch (request.DeviceId)
             {

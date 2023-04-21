@@ -1,46 +1,33 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mcce22.SmartFactory.Client.Requests;
-using MQTTnet;
-using MQTTnet.Client;
-using Newtonsoft.Json;
+using Mcce22.SmartFactory.Client.Services;
 
 namespace Mcce22.SmartFactory.Client.ViewModels
 {
     public abstract class FactoryPlantBase : ObservableObject
     {
-        private readonly IMqttClient _mqttClient;
+        private readonly IMqttService _mqttService;
 
         protected abstract string Topic { get; }
 
-        public FactoryPlantBase(IMqttClient mqttClient)
+        public FactoryPlantBase(IMqttService mqttService)
         {
-            _mqttClient = mqttClient;
+            _mqttService = mqttService;
         }
 
         protected async Task PublishMessage(string deviceId, bool active)
         {
-            if (_mqttClient.IsConnected)
+            await _mqttService.PublishMessage(new MessageModel
             {
-                var request = new RequestModel
-                {
-                    DeviceId = deviceId,
-                    Topic = Topic,
-                    Active = active
-                };
-
-                var msg = new MqttApplicationMessageBuilder()
-                    .WithTopic(Topic)
-                    .WithPayload(JsonConvert.SerializeObject(request))
-                    .Build();
-
-                await _mqttClient.PublishAsync(msg, CancellationToken.None);
-            }
+                DeviceId = deviceId,
+                Topic = Topic,
+                Active = active
+            });
         }
 
         public abstract void Initialize();
 
-        public abstract Task HandleRequest(RequestModel request);
+        public abstract Task HandleRequest(MessageModel request);
     }
 }

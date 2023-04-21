@@ -15,7 +15,6 @@
         <SolidColorBrush x:Key="PowerButtonDefaultForegroundBrush" Color="#444" />
         <SolidColorBrush x:Key="PowerButtonActiveForegroundBrush" Color="Yellow" />
 
-        <conv:StateToBrushConverter x:Key="StateToBrushConverter" />
         <conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
 
         <Style
@@ -34,6 +33,7 @@
             </Style.Triggers>
         </Style>
 
+        <!--  Factory  -->
         <Style TargetType="ctrl:FactoryButton">
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="BorderThickness" Value="1" />
@@ -90,6 +90,7 @@
             </Style.Triggers>
         </Style>
 
+        <!--  Door  -->
         <Storyboard
             x:Key="OpenDoorStoryboard"
             Completed="OnOpenDoorCompleted"
@@ -146,6 +147,7 @@
             </Style.Triggers>
         </Style>
 
+        <!--  Lifter  -->
         <Storyboard
             x:Key="LifterUpStoryboard"
             Completed="OnLifterUpCompleted"
@@ -153,11 +155,11 @@
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
                 To="160"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
             <DoubleAnimation
                 Storyboard.TargetProperty="(Canvas.Top)"
                 To="413"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
         </Storyboard>
 
         <Storyboard
@@ -167,33 +169,55 @@
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
                 To="8"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
             <DoubleAnimation
                 Storyboard.TargetProperty="(Canvas.Top)"
                 To="565"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
         </Storyboard>
 
         <Storyboard x:Key="PlatformUpStoryboard" FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="(Canvas.Top)"
                 To="333"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
         </Storyboard>
 
         <Storyboard x:Key="PlatformDownStoryboard" FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="(Canvas.Top)"
                 To="485"
-                Duration="0:0:8" />
+                Duration="0:0:4" />
         </Storyboard>
 
-        <Style x:Key="LifterStyle" TargetType="Rectangle">
-            <Setter Property="Height" Value="8" />
-            <Setter Property="Canvas.Top" Value="565" />
-            <Style.Triggers />
-        </Style>
+        <!--  Press  -->
+        <Storyboard x:Key="ShaftDownStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="80"
+                Duration="0:0:1" />
+        </Storyboard>
 
+        <Storyboard x:Key="ShaftUpStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="25"
+                Duration="0:0:1" />
+        </Storyboard>
+
+        <Storyboard x:Key="PressDownStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="221"
+                Duration="0:0:1" />
+        </Storyboard>
+
+        <Storyboard x:Key="PressUpStoryboard" FillBehavior="HoldEnd">
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="182"
+                Duration="0:0:1" />
+        </Storyboard>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -317,7 +341,7 @@
                     Width="25"
                     Height="18"
                     Content="Q1"
-                    IsActive="{Binding Platform.Q1Active}" />
+                    IsActive="{Binding Lifter.Q1Active}" />
                 <!--  Q2  -->
                 <ctrl:FactorySensor
                     Canvas.Left="403"
@@ -325,7 +349,7 @@
                     Width="25"
                     Height="18"
                     Content="Q2"
-                    IsActive="{Binding Platform.Q2Active}" />
+                    IsActive="{Binding Lifter.Q2Active}" />
                 <!--  B1  -->
                 <ctrl:FactorySensor
                     Canvas.Left="365"
@@ -333,7 +357,7 @@
                     Width="22"
                     Height="18"
                     Content="B1"
-                    IsActive="{Binding Platform.B1Active}" />
+                    IsActive="{Binding Lifter.B1Active}" />
                 <!--  B2  -->
                 <ctrl:FactorySensor
                     Canvas.Left="365"
@@ -341,15 +365,15 @@
                     Width="22"
                     Height="18"
                     Content="B2"
-                    IsActive="{Binding Platform.B2Active}" />
+                    IsActive="{Binding Lifter.B2Active}" />
                 <!--  S1  -->
                 <ctrl:FactoryButton
                     Canvas.Left="410"
                     Canvas.Top="353"
                     Width="21"
                     Height="25"
-                    Command="{Binding Platform.S1ActivatedCommand}"
-                    IsActive="{Binding Platform.S1Active}">
+                    Command="{Binding Lifter.S1ActivatedCommand}"
+                    IsActive="{Binding Lifter.S1Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -361,9 +385,9 @@
                     Canvas.Top="382"
                     Width="21"
                     Height="25"
-                    Command="{Binding Platform.S21ActivatedCommand}"
+                    Command="{Binding Lifter.S21ActivatedCommand}"
                     Foreground="Red"
-                    IsActive="{Binding Platform.S21Active}">
+                    IsActive="{Binding Lifter.S21Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -375,8 +399,8 @@
                     Canvas.Top="410"
                     Width="21"
                     Height="25"
-                    Command="{Binding Platform.S2ActivatedCommand}"
-                    IsActive="{Binding Platform.S2Active}">
+                    Command="{Binding Lifter.S2ActivatedCommand}"
+                    IsActive="{Binding Lifter.S2Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -387,9 +411,9 @@
                     Canvas.Top="544"
                     Width="23"
                     Height="26"
-                    Command="{Binding Platform.F1ActivatedCommand}"
+                    Command="{Binding Lifter.F1ActivatedCommand}"
                     Foreground="DarkOrange"
-                    IsActive="{Binding Platform.F1Active}">
+                    IsActive="{Binding Lifter.F1Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -410,25 +434,69 @@
                 <Rectangle
                     x:Name="Lifter"
                     Canvas.Left="312"
-                    Width="14"
-                    Style="{StaticResource LifterStyle}">
+                    Width="14">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="/Images/smart_factory_lifter.png" Stretch="Fill" />
                     </Rectangle.Fill>
                 </Rectangle>
                 <!--  Press  -->
+                <!--  Q11  -->
+                <ctrl:FactorySensor
+                    Canvas.Left="615"
+                    Canvas.Top="109"
+                    Width="25"
+                    Height="18"
+                    Content="Q11"
+                    IsActive="{Binding Press.Q11Active}" />
+                <!--  S14  -->
                 <ctrl:FactoryButton
                     Canvas.Left="593"
                     Canvas.Top="198"
                     Width="22"
                     Height="26"
-                    Command="{Binding Platform.S2ActivatedCommand}"
-                    IsActive="{Binding Platform.S2Active}">
+                    Command="{Binding Press.S14ActivatedCommand}"
+                    IsActive="{Binding Press.S14Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Flip="Horizontal"
+                        Kind="HandPaperSolid" />
+                </ctrl:FactoryButton>
+                <!--  S15  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="745"
+                    Canvas.Top="198"
+                    Width="22"
+                    Height="26"
+                    Command="{Binding Press.S15ActivatedCommand}"
+                    IsActive="{Binding Press.S15Active}">
                     <iconPacks:FontAwesome
                         Width="14"
                         Height="14"
                         Kind="HandPaperSolid" />
                 </ctrl:FactoryButton>
+                <!--  Shaft  -->
+                <Rectangle
+                    x:Name="Shaft"
+                    Canvas.Left="675"
+                    Canvas.Top="158"
+                    Width="14"
+                    Height="25">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/shaft.png" Stretch="Fill" />
+                    </Rectangle.Fill>
+                </Rectangle>
+                <!--  Press  -->
+                <Rectangle
+                    x:Name="Press"
+                    Canvas.Left="646"
+                    Canvas.Top="182"
+                    Width="70"
+                    Height="28">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/press.png" Stretch="Fill" />
+                    </Rectangle.Fill>
+                </Rectangle>
             </Canvas>
         </Viewbox>
         <Button

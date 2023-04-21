@@ -21,6 +21,12 @@ namespace Mcce22.SmartFactory.Controller.Entities
         public bool S3 { get; set; }
 
         [DynamoDBProperty]
+        public bool S14 { get; set; }
+
+        [DynamoDBProperty]
+        public bool S15 { get; set; }
+
+        [DynamoDBProperty]
         public bool S22 { get; set; }
 
         [DynamoDBProperty]
@@ -39,6 +45,9 @@ namespace Mcce22.SmartFactory.Controller.Entities
         public bool B5 { get; set; }
 
         [DynamoDBProperty]
+        public bool F1 { get; set; }
+
+        [DynamoDBProperty]
         public bool Q1 { get; set; }
 
         [DynamoDBProperty]
@@ -51,6 +60,6 @@ namespace Mcce22.SmartFactory.Controller.Entities
         public bool Q4 { get; set; }
 
         [DynamoDBProperty]
-        public bool F1 { get; set; }
+        public bool Q11 { get; set; }
     }
 }

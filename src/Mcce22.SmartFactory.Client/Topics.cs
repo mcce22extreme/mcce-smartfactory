@@ -4,6 +4,8 @@
     {
         public const string DOOR = "mcce22-smart-factory/door";
 
-        public const string PLATFORM = "mcce22-smart-factory/platform";
+        public const string LIFTER = "mcce22-smart-factory/lifter";
+
+        public const string PRESS = "mcce22-smart-factory/press";
     }
 }

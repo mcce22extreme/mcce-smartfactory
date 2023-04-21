@@ -1,6 +1,9 @@
 ﻿using System.Text;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.IotData;
+using Amazon.Lambda.Core;
+using Mcce22.SmartFactory.Controller.Entities;
 using Mcce22.SmartFactory.Controller.Models;
 using Newtonsoft.Json;
 
@@ -28,12 +31,22 @@ namespace Mcce22.SmartFactory.Controller.Handlers
             {
                 await _semaphoreSlim.WaitAsync();
 
-                await OnHandleRequest(model);
+                using var context = new DynamoDBContext(DynamoDBClient);
+
+                var deviceState = await context.LoadAsync<DeviceState>(Topic) ?? new DeviceState { Topic = Topic };
+
+                LambdaLogger.Log($"Device States before: {JsonConvert.SerializeObject(deviceState)}");
+
+                await OnHandleRequest(model, deviceState);
+
+                LambdaLogger.Log($"Device States after: {JsonConvert.SerializeObject(deviceState)}");
+
+                await context.SaveAsync(deviceState);
             }
             finally { _semaphoreSlim.Release(); }
         }
 
-        protected abstract Task OnHandleRequest(RequestModel model);
+        protected abstract Task OnHandleRequest(RequestModel model, DeviceState deviceState);
 
         protected async Task PublishMessage(string deviceId, bool active)
         {
@@ -49,6 +62,6 @@ namespace Mcce22.SmartFactory.Controller.Handlers
                 Topic = Topic,
                 Payload = new MemoryStream(Encoding.UTF8.GetBytes(json))
             });
-        }
+        }        
     }
 }

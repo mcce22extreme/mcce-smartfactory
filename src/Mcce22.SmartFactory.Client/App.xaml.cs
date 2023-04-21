@@ -2,6 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Mcce22.SmartFactory.Client.Services;
 using Mcce22.SmartFactory.Client.ViewModels;
 using Microsoft.Extensions.Configuration;
 
@@ -21,11 +24,21 @@ namespace Mcce22.SmartFactory.Client
                 .Build()
                 .Get<AppSettings>();
 
-            var doorViewModel = new FactoryViewModel(appSettings);
-            var mainViewModel = new MainViewModel(doorViewModel);
+            var container = new WindsorContainer();
+            container.Register(Component.For<AppSettings>().Instance(appSettings));
+            container.Register(Component.For<MainViewModel>());
+            container.Register(Component.For<MainWindow>());
+            container.Register(Component.For<FactoryViewModel>());
+            container.Register(Component.For<DoorViewModel>());
+            container.Register(Component.For<LifterViewModel>());
+            container.Register(Component.For<PressViewModel>());
+            container.Register(Component.For<IMqttService>()
+                .ImplementedBy<MqttService>()
+                .LifestyleSingleton());
 
-            MainWindow = new MainWindow(mainViewModel);
+            container.Install();
 
+            MainWindow = container.Resolve<MainWindow>();
             MainWindow.Show();
         }
     }
