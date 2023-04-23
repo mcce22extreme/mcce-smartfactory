@@ -94,7 +94,7 @@
         <Storyboard
             x:Key="OpenDoorStoryboard"
             Completed="OnOpenDoorCompleted"
-            FillBehavior="Stop">
+            FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
                 To="0"
@@ -104,7 +104,7 @@
         <Storyboard
             x:Key="CloseDoorStoryboard"
             Completed="OnCloseDoorCompleted"
-            FillBehavior="Stop">
+            FillBehavior="HoldEnd">
             <DoubleAnimation
                 Storyboard.TargetProperty="Height"
                 To="130"
@@ -116,8 +116,8 @@
             <Style.Triggers>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Door.Q3Active}" Value="true" />
-                        <Condition Binding="{Binding Door.EmergencyOpen}" Value="false" />
+                        <Condition Binding="{Binding Q3.Active}" Value="true" />
+                        <Condition Binding="{Binding B5.Active}" Value="false" />
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.EnterActions>
                         <BeginStoryboard x:Name="Open" Storyboard="{StaticResource OpenDoorStoryboard}" />
@@ -126,7 +126,7 @@
                         <StopStoryboard BeginStoryboardName="Open" />
                     </MultiDataTrigger.ExitActions>
                 </MultiDataTrigger>
-                <DataTrigger Binding="{Binding Door.Q4Active}" Value="True">
+                <DataTrigger Binding="{Binding Q4.Active}" Value="True">
                     <DataTrigger.EnterActions>
                         <BeginStoryboard x:Name="Close" Storyboard="{StaticResource CloseDoorStoryboard}" />
                     </DataTrigger.EnterActions>
@@ -134,7 +134,7 @@
                         <StopStoryboard BeginStoryboardName="Close" />
                     </DataTrigger.ExitActions>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Door.EmergencyOpen}" Value="True">
+                <!--<DataTrigger Binding="{Binding B5.Active}" Value="True">
                     <DataTrigger.EnterActions>
                         <PauseStoryboard BeginStoryboardName="Close" />
                         <BeginStoryboard x:Name="OpenEmergancy" Storyboard="{StaticResource OpenDoorStoryboard}" />
@@ -143,7 +143,21 @@
                         <StopStoryboard BeginStoryboardName="OpenEmergancy" />
                         <StopStoryboard BeginStoryboardName="Close" />
                     </DataTrigger.ExitActions>
-                </DataTrigger>
+                </DataTrigger>-->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding B4.Active}" Value="false" />
+                        <Condition Binding="{Binding B5.Active}" Value="true" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <PauseStoryboard BeginStoryboardName="Close" />
+                        <BeginStoryboard x:Name="OpenEmergancy" Storyboard="{StaticResource OpenDoorStoryboard}" />
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="OpenEmergancy" />
+                        <StopStoryboard BeginStoryboardName="Close" />
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 
@@ -247,8 +261,8 @@
                     Canvas.Top="470"
                     Width="22"
                     Height="25"
-                    Command="{Binding Door.S3ActivatedCommand}"
-                    IsActive="{Binding Door.S3Active}">
+                    Command="{Binding S3.ActivateCommand}"
+                    IsActive="{Binding S3.Active}">
                     <iconPacks:FontAwesome
                         Width="8"
                         Height="8"
@@ -260,8 +274,8 @@
                     Canvas.Top="423"
                     Width="22"
                     Height="25"
-                    Command="{Binding Door.S22ActivatedCommand}"
-                    IsActive="{Binding Door.S22Active}">
+                    Command="{Binding S22.ActivateCommand}"
+                    IsActive="{Binding S22.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="10"
@@ -274,7 +288,7 @@
                     Width="22"
                     Height="20"
                     Content="B3"
-                    IsActive="{Binding Door.B3Active}" />
+                    IsActive="{Binding B3.Active}" />
                 <!--  B4  -->
                 <ctrl:FactorySensor
                     Canvas.Left="673"
@@ -282,24 +296,24 @@
                     Width="22"
                     Height="18"
                     Content="B4"
-                    IsActive="{Binding Door.B4Active}" />
-                <!--  B5_1  -->
+                    IsActive="{Binding B4.Active}" />
+                <!--  B5  -->
                 <ctrl:FactorySensor
                     Canvas.Left="509"
                     Canvas.Top="500"
                     Width="22"
                     Height="20"
                     Content="B5"
-                    IsActive="{Binding Door.B5Active}" />
-                <!--  B5_2  -->
+                    IsActive="{Binding B5.Active}" />
+                <!--  F2  -->
                 <ctrl:FactoryButton
                     Canvas.Left="701"
                     Canvas.Top="497"
                     Width="23"
                     Height="27"
-                    Command="{Binding Door.B5ActivatedCommand}"
+                    Command="{Binding F2.ActivateCommand}"
                     Foreground="DarkOrange"
-                    IsActive="{Binding Door.B5Active}">
+                    IsActive="{Binding F2.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -312,7 +326,7 @@
                     Width="25"
                     Height="18"
                     Content="Q3"
-                    IsActive="{Binding Door.Q3Active}" />
+                    IsActive="{Binding Q3.Active}" />
                 <!--  Q4  -->
                 <ctrl:FactorySensor
                     Canvas.Left="712"
@@ -320,7 +334,7 @@
                     Width="25"
                     Height="18"
                     Content="Q4"
-                    IsActive="{Binding Door.Q4Active}" />
+                    IsActive="{Binding Q4.Active}" />
                 <!--  Door  -->
                 <Rectangle
                     x:Name="Door"
@@ -341,7 +355,7 @@
                     Width="25"
                     Height="18"
                     Content="Q1"
-                    IsActive="{Binding Lifter.Q1Active}" />
+                    IsActive="{Binding Q1.Active}" />
                 <!--  Q2  -->
                 <ctrl:FactorySensor
                     Canvas.Left="403"
@@ -349,7 +363,7 @@
                     Width="25"
                     Height="18"
                     Content="Q2"
-                    IsActive="{Binding Lifter.Q2Active}" />
+                    IsActive="{Binding Q2.Active}" />
                 <!--  B1  -->
                 <ctrl:FactorySensor
                     Canvas.Left="365"
@@ -357,7 +371,7 @@
                     Width="22"
                     Height="18"
                     Content="B1"
-                    IsActive="{Binding Lifter.B1Active}" />
+                    IsActive="{Binding B1.Active}" />
                 <!--  B2  -->
                 <ctrl:FactorySensor
                     Canvas.Left="365"
@@ -365,15 +379,15 @@
                     Width="22"
                     Height="18"
                     Content="B2"
-                    IsActive="{Binding Lifter.B2Active}" />
+                    IsActive="{Binding B2.Active}" />
                 <!--  S1  -->
                 <ctrl:FactoryButton
                     Canvas.Left="410"
                     Canvas.Top="353"
                     Width="21"
                     Height="25"
-                    Command="{Binding Lifter.S1ActivatedCommand}"
-                    IsActive="{Binding Lifter.S1Active}">
+                    Command="{Binding S1.ActivateCommand}"
+                    IsActive="{Binding S1.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -385,9 +399,9 @@
                     Canvas.Top="382"
                     Width="21"
                     Height="25"
-                    Command="{Binding Lifter.S21ActivatedCommand}"
+                    Command="{Binding S21.ActivateCommand}"
                     Foreground="Red"
-                    IsActive="{Binding Lifter.S21Active}">
+                    IsActive="{Binding S21.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -399,21 +413,22 @@
                     Canvas.Top="410"
                     Width="21"
                     Height="25"
-                    Command="{Binding Lifter.S2ActivatedCommand}"
-                    IsActive="{Binding Lifter.S2Active}">
+                    Command="{Binding S2.ActivateCommand}"
+                    IsActive="{Binding S2.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
                         Kind="ArrowDownSolid" />
                 </ctrl:FactoryButton>
+                <!--  F1  -->
                 <ctrl:FactoryButton
                     Canvas.Left="441"
                     Canvas.Top="544"
                     Width="23"
                     Height="26"
-                    Command="{Binding Lifter.F1ActivatedCommand}"
+                    Command="{Binding F1.ActivateCommand}"
                     Foreground="DarkOrange"
-                    IsActive="{Binding Lifter.F1Active}">
+                    IsActive="{Binding F1.Active}">
                     <iconPacks:FontAwesome
                         Width="12"
                         Height="12"
@@ -447,15 +462,15 @@
                     Width="25"
                     Height="18"
                     Content="Q11"
-                    IsActive="{Binding Press.Q11Active}" />
+                    IsActive="{Binding Q11.Active}" />
                 <!--  S14  -->
                 <ctrl:FactoryButton
                     Canvas.Left="593"
                     Canvas.Top="198"
                     Width="22"
                     Height="26"
-                    Command="{Binding Press.S14ActivatedCommand}"
-                    IsActive="{Binding Press.S14Active}">
+                    Command="{Binding S14.ActivateCommand}"
+                    IsActive="{Binding S14.Active}">
                     <iconPacks:FontAwesome
                         Width="14"
                         Height="14"
@@ -468,8 +483,8 @@
                     Canvas.Top="198"
                     Width="22"
                     Height="26"
-                    Command="{Binding Press.S15ActivatedCommand}"
-                    IsActive="{Binding Press.S15Active}">
+                    Command="{Binding S15.ActivateCommand}"
+                    IsActive="{Binding S15.Active}">
                     <iconPacks:FontAwesome
                         Width="14"
                         Height="14"

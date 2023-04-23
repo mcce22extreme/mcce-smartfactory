@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -19,7 +18,6 @@ namespace Mcce22.SmartFactory.Client.Views
         private const int DEFAULT_SHAFT_HEIGHT = 25;
         private const int DEFAULT_PRESS_CANVAS_TOP = 182;
 
-
         private readonly Storyboard _lifterUpStoryboard;
         private readonly Storyboard _lifterDownStoryboard;
         private readonly Storyboard _platformUpStoryboard;
@@ -28,6 +26,8 @@ namespace Mcce22.SmartFactory.Client.Views
         private readonly Storyboard _pressDownStoryboard;
         private readonly Storyboard _shaftDownStoryboard;
         private readonly Storyboard _shaftUpStoryboard;
+
+        private FactoryViewModel Factory { get { return DataContext as FactoryViewModel; } }
 
         public FactoryView()
         {
@@ -47,23 +47,18 @@ namespace Mcce22.SmartFactory.Client.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var factory = DataContext as ISimulatorViewModel;
-
-            factory.FactoryReseted += OnFactoryReseted;
-            factory.Lifter.PropertyChanged += OnLifterPropertyChanged;
-            factory.Press.PropertyChanged += OnPressPropertyChanged;
+            Factory.FactoryReseted += OnFactoryReseted;
+            Factory.DeviceChanged += OnDeviceChanged;
         }
 
-        private void OnLifterPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnDeviceChanged(object sender, DeviceChangedEventArgs e)
         {
             Dispatcher.BeginInvoke(() =>
             {
-                var factory = DataContext as ISimulatorViewModel;
-
-                switch (e.PropertyName)
+                switch (e.Device.DeviceName)
                 {
-                    case nameof(LifterViewModel.S21Active):
-                        if (factory.Lifter.S21Active && !factory.Lifter.F1Active)
+                    case DeviceNames.S21:
+                        if (Factory.S21.Active && !Factory.F1.Active)
                         {
                             _lifterUpStoryboard.Pause(Lifter);
                             _lifterDownStoryboard.Pause(Lifter);
@@ -72,8 +67,8 @@ namespace Mcce22.SmartFactory.Client.Views
                             _platformDownStoryboard.Pause(Platform);
                         }
                         break;
-                    case nameof(LifterViewModel.Q1Active):
-                        if (factory.Lifter.Q1Active)
+                    case DeviceNames.Q1:
+                        if (Factory.Q1.Active)
                         {
                             _lifterDownStoryboard.Pause(Lifter);
                             _lifterUpStoryboard.Begin(Lifter, true);
@@ -82,8 +77,8 @@ namespace Mcce22.SmartFactory.Client.Views
                             _platformUpStoryboard.Begin(Platform, true);
                         }
                         break;
-                    case nameof(LifterViewModel.Q2Active):
-                        if (factory.Lifter.Q2Active)
+                    case DeviceNames.Q2:
+                        if (Factory.Q2.Active)
                         {
                             _lifterUpStoryboard.Pause(Lifter);
                             _lifterDownStoryboard.Begin(Lifter, true);
@@ -92,20 +87,8 @@ namespace Mcce22.SmartFactory.Client.Views
                             _platformDownStoryboard.Begin(Platform, true);
                         }
                         break;
-                }
-            });            
-        }
-
-        private void OnPressPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(() =>
-            {
-                var factory = DataContext as ISimulatorViewModel;
-
-                switch (e.PropertyName)
-                {
-                    case nameof(PressViewModel.Q11Active):
-                        if (factory.Press.Q11Active)
+                    case DeviceNames.Q11:
+                        if (Factory.Q11.Active)
                         {
                             _shaftUpStoryboard.Pause();
                             _shaftDownStoryboard.Begin(Shaft, true);
@@ -171,18 +154,17 @@ namespace Mcce22.SmartFactory.Client.Views
             _pressUpStoryboard.Seek(TimeSpan.Zero);
         }
 
-        private void OnOpenDoorCompleted(object sender, EventArgs e)
+        private async void OnOpenDoorCompleted(object sender, EventArgs e)
         {
             Door.Height = 0;
-            var factory = DataContext as ISimulatorViewModel;
-            factory?.Door?.DoorIsOpened();
+            await Factory.B3.ToggleActivation(true);
+
         }
 
-        private void OnCloseDoorCompleted(object sender, EventArgs e)
+        private async void OnCloseDoorCompleted(object sender, EventArgs e)
         {
             Door.Height = DEFAULT_DOOR_HEIGHT;
-            var factory = DataContext as ISimulatorViewModel;
-            factory?.Door?.DoorIsClosed();
+            await Factory.B4.ToggleActivation(true);
         }
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
@@ -190,16 +172,14 @@ namespace Mcce22.SmartFactory.Client.Views
             ((TextBox)sender).ScrollToEnd();
         }
 
-        private void OnLifterUpCompleted(object sender, EventArgs e)
+        private async void OnLifterUpCompleted(object sender, EventArgs e)
         {
-            var factory = DataContext as ISimulatorViewModel;
-            factory?.Lifter?.LifterUpCompleted();
+            await Factory.B1.ToggleActivation(true);
         }
 
-        private void OnLifterDownCompleted(object sender, EventArgs e)
+        private async void OnLifterDownCompleted(object sender, EventArgs e)
         {
-            var factory = DataContext as ISimulatorViewModel;
-            factory?.Lifter?.LifterDownCompleted();
+            await Factory.B2.ToggleActivation(true);
         }
     }
 }

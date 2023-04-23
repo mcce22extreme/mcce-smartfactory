@@ -29,9 +29,6 @@ namespace Mcce22.SmartFactory.Client
             container.Register(Component.For<MainViewModel>());
             container.Register(Component.For<MainWindow>());
             container.Register(Component.For<FactoryViewModel>());
-            container.Register(Component.For<DoorViewModel>());
-            container.Register(Component.For<LifterViewModel>());
-            container.Register(Component.For<PressViewModel>());
             container.Register(Component.For<IMqttService>()
                 .ImplementedBy<MqttService>()
                 .LifestyleSingleton());

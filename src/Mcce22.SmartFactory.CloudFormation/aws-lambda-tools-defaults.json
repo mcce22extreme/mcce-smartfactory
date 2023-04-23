@@ -1,9 +1,0 @@
-{
-    "configuration": "Release",
-    "profile": "default",
-    "region": "us-east-1",
-    "s3-bucket": "mcce22-smart-factory-cf",
-    "stack-name": "mcce22-smart-factory-stack",
-    "template": "serverless.template.yaml",
-    "template-parameters": "DbAdminUsername=admin;DbAdminPassword=g6Ct8M2CpTRTitp6K0eR;SmtpUsername=mcce22smartoffice@gmail.com;SmtpPassword=iilmnolotrvvtmox;SmtpSendername=MCCE22 Smart Office;"
-}
