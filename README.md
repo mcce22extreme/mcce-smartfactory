@@ -10,8 +10,7 @@ The Smart Factory is an IoT project, which we realized in the IoT Frameworks lec
 - [Motivation](#motivation)
 - [Architectur](#architectur)
 - [Built with](#builtwith)
-- [Getting started](#gettingstarted)
-- [Challenges](#challenges)
+- [Run the simulator](#runthesimulator)
 
 ## Motivation <a name="motivation"></a>
 
@@ -57,12 +56,38 @@ In the simulator, the 3 systems can be controlled and each sensor simulates its 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Getting Started <a name="gettingstarted"></a>
+## Run the simulator <a name="runthesimulator"></a>
 
-1. Checkout the project
-2. Create required IoT Things in AWS IoT Core
-3. Run the simulator
-
-## Challenges <a name="challenges"></a>
+1. Sign in to the AWS console
+2. Navigate to the IoT Core service
+3. Select ```Connect > Connect one device``` in the side navigation
+4. Scroll to "Prepare your device" in the content area and select and save the ```Data Plane Endpoint``` Address. This address has the format {identifier}-ats.iot.{region}.amazonaws.com
+5. In the side navigation, select ```Manage > Security > Policies```
+6. Create a new policy. Here is an example of a policy that allows all actions for all resources:
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "iot:*",
+      "Resource": "*"
+    }
+  ]
+}
+```
+7. In the side navigation, select ```Manage > All devices > Things```
+8. Create a new thing (name doesn't matter). Select the ```previously created policy``` from step 6 and keep all other default values. Download the certificatesat the end of the creation wizard. The following files are required by the simulator:
+* Device certificate
+* Private key file
+* Amazon Root CA certificate
+9. Clone the repository
+10. Copy the certificate to the ```Certificates``` folder and use the following names:
+* Device certificate: ```certificate.pem.crt```
+* Private Key File: ```private.pem.key```
+* Amazon Root CA certificate: ```AmazonRootCA1.pem```
+11. Open the project/solution with ```Visual Studio``` or ```VSCode```.
+12. Open the configuration file ```appsettings.json``` and use the ```Data Plane Endpoint``` Address from step 4 as ```EndpointAddress```. The other settings can be left as they are.
+13. Start the application (Ctrl+F5 or Debug > Start without debugging)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
