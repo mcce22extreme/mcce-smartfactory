@@ -2,11 +2,11 @@ name: Build LaTeX document
 
 on:
   push:
-    branches: [ "main", "release/*", "develop/*" ]
+    branches: [ "main", "release/*", "develop/*", "develop" ]
     paths:
       - documentation/**
   pull_request:
-    branches: [ "main", "release/*", "develop/*" ]
+    branches: [ "main", "release/*", "develop/*", "develop" ]
     paths:
       - documentation/**
   release:
