@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PDF
-          path: "*.pdf"
+          path: "documentation/*.pdf"
 
   release:
     if: github.event_name == 'release'
