@@ -633,3 +633,5 @@ TSWLatexianTemp*
 
 # Do not add locally generated pdfs
 *.pdf
+
+*.equ
