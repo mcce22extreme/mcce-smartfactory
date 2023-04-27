@@ -29,7 +29,6 @@ AWS IoT Core supports the following 3 communication protocols:
     \item \ac{https}
     \item WebSockets
 \end{itemize}
-
 Communication via \ac{mqtt} uses a subscribe messaging model that is commonly used in \ac{iot} applications. 
 Messages are exchanged via a centrally operated message broker, whereby applications can only subscribe to those message types, so-called topics, in which they are interested.
 \\
@@ -44,7 +43,7 @@ It creates a persistent, low-latency connection between the two endpoints that a
 
 By using common communication protocols such as \ac{mqtt}, \ac{https} or WebSockets, AWS IoT Core can already be easily integrated into existing \ac{iot} infrastructures. 
 In addition to these protocols, AWS IoT Core provides its own \ac{sdk}s for popular programming languages such as C, Java, Python, and Node.js that help make it easier to connect and communicate with IoT devices. 
-These \ac{sdk}s implement the AWS IoT Device Gateway protocol, which is a secure and scalable method of transferring data to \ac{iot} devices over \ac{mqtt}, \ac{https} , or WebSockets.
+These \ac{sdk}s implement the AWS IoT Device Gateway protocol, which is a secure and scalable method of transferring data to \ac{iot} devices over \ac{mqtt}, \ac{https} or WebSockets.
 In addition to integration and interaction with other \ac{iot} devices, a variety of other AWS services such as Lambda functions, DynamoDB, \ac{sns}, \ac{sqs}, \ac{s3}, etc. can be controlled by defining so-called message rules.
 
 \subsection{Security}
