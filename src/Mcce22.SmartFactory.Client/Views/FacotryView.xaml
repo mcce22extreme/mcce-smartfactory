@@ -250,9 +250,20 @@
                 x:Name="CanvasFactory"
                 Width="1024"
                 Height="600">
-                <Canvas.Background>
-                    <ImageBrush ImageSource="/Images/smart_factory.png" Stretch="Fill" />
-                </Canvas.Background>
+                <!--<Canvas.Background>
+                    <ImageBrush ImageSource="/Images/smart_factory2.png" Stretch="Fill" />
+                </Canvas.Background>-->
+                <!--  Background  -->
+                <Rectangle
+                    Canvas.Left="0"
+                    Canvas.Top="0"
+                    Width="1024"
+                    Height="600">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/smart_factory2.png" Stretch="Fill" />
+                    </Rectangle.Fill>
+                </Rectangle>
+
                 <!--  Door  -->
                 <!--  S3  -->
                 <ctrl:FactoryButton
@@ -366,15 +377,15 @@
                     IsActive="{Binding Q2.Active}" />
                 <!--  B1  -->
                 <ctrl:FactorySensor
-                    Canvas.Left="365"
-                    Canvas.Top="370"
+                    Canvas.Left="364"
+                    Canvas.Top="369"
                     Width="22"
                     Height="18"
                     Content="B1"
                     IsActive="{Binding B1.Active}" />
                 <!--  B2  -->
                 <ctrl:FactorySensor
-                    Canvas.Left="365"
+                    Canvas.Left="364"
                     Canvas.Top="549"
                     Width="22"
                     Height="18"
@@ -382,7 +393,7 @@
                     IsActive="{Binding B2.Active}" />
                 <!--  S1  -->
                 <ctrl:FactoryButton
-                    Canvas.Left="410"
+                    Canvas.Left="409"
                     Canvas.Top="353"
                     Width="21"
                     Height="25"
@@ -395,7 +406,7 @@
                 </ctrl:FactoryButton>
                 <!--  S21  -->
                 <ctrl:FactoryButton
-                    Canvas.Left="410"
+                    Canvas.Left="409"
                     Canvas.Top="382"
                     Width="21"
                     Height="25"
@@ -409,7 +420,7 @@
                 </ctrl:FactoryButton>
                 <!--  S2  -->
                 <ctrl:FactoryButton
-                    Canvas.Left="410"
+                    Canvas.Left="409"
                     Canvas.Top="410"
                     Width="21"
                     Height="25"
@@ -465,7 +476,7 @@
                     IsActive="{Binding Q11.Active}" />
                 <!--  S14  -->
                 <ctrl:FactoryButton
-                    Canvas.Left="593"
+                    Canvas.Left="592"
                     Canvas.Top="198"
                     Width="22"
                     Height="26"
@@ -479,9 +490,9 @@
                 </ctrl:FactoryButton>
                 <!--  S15  -->
                 <ctrl:FactoryButton
-                    Canvas.Left="745"
+                    Canvas.Left="744"
                     Canvas.Top="198"
-                    Width="22"
+                    Width="23"
                     Height="26"
                     Command="{Binding S15.ActivateCommand}"
                     IsActive="{Binding S15.Active}">
@@ -512,6 +523,84 @@
                         <ImageBrush ImageSource="/Images/press.png" Stretch="Fill" />
                     </Rectangle.Fill>
                 </Rectangle>
+                <!--  Overlay  -->
+                <Rectangle
+                    Width="1024"
+                    Height="600"
+                    Fill="#333"
+                    Opacity="0.8"
+                    Visibility="{Binding E2.Active, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Path
+                    Fill="#333"
+                    Opacity="0.8"
+                    Visibility="{Binding E2.Active, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Path.Data>
+                        <CombinedGeometry GeometryCombineMode="Xor">
+                            <CombinedGeometry.Geometry1>
+                                <RectangleGeometry Rect="0,0,1024,600" />
+                            </CombinedGeometry.Geometry1>
+                            <CombinedGeometry.Geometry2>
+                                <RectangleGeometry Rect="250,30,760,545" />
+                            </CombinedGeometry.Geometry2>
+                        </CombinedGeometry>
+                    </Path.Data>
+                </Path>
+                <!--  S9  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="757"
+                    Canvas.Top="495"
+                    Width="28"
+                    Height="31"
+                    Command="{Binding S9.ActivateCommand}"
+                    Foreground="Red"
+                    IsActive="{Binding S9.Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Kind="LightbulbSolid" />
+                </ctrl:FactoryButton>
+                <!--  S10  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="786"
+                    Canvas.Top="220"
+                    Width="28"
+                    Height="32"
+                    Command="{Binding S10.ActivateCommand}"
+                    Foreground="Red"
+                    IsActive="{Binding S10.Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Kind="LightbulbSolid" />
+                </ctrl:FactoryButton>
+                <!--  S11  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="87"
+                    Canvas.Top="68"
+                    Width="28"
+                    Height="32"
+                    Command="{Binding S11.ActivateCommand}"
+                    Foreground="Red"
+                    IsActive="{Binding S11.Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Kind="LightbulbSolid" />
+                </ctrl:FactoryButton>
+                <!--  S28  -->
+                <ctrl:FactoryButton
+                    Canvas.Left="363"
+                    Canvas.Top="457"
+                    Width="24"
+                    Height="28"
+                    Command="{Binding S28.ActivateCommand}"
+                    Foreground="Red"
+                    IsActive="{Binding S28.Active}">
+                    <iconPacks:FontAwesome
+                        Width="14"
+                        Height="14"
+                        Kind="LightbulbSolid" />
+                </ctrl:FactoryButton>
             </Canvas>
         </Viewbox>
         <Button
@@ -529,11 +618,7 @@
                 Height="20"
                 Kind="UndoAltSolid" />
         </Button>
-        <Grid
-            Grid.Row="1"
-            Background="#444"
-            Opacity="0.9"
-            Visibility="{Binding FactoryStarted, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+        <Grid Grid.Row="1" Visibility="{Binding FactoryStarted, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
             <Button
                 Width="100"
                 Height="100"
