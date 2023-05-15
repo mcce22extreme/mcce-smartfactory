@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Mcce22.SmartFactory.Client.ViewModels
 {
-    public class FactoryViewModel : ObservableObject
+    public partial class FactoryViewModel : ObservableObject
     {
         private readonly IMqttService _mqttService;
 
@@ -58,46 +58,18 @@ namespace Mcce22.SmartFactory.Client.ViewModels
 
         public Q11Device Q11 { get; }
 
+        [ObservableProperty]
         private string _messageLog;
-        public string MessageLog
-        {
-            get { return _messageLog; }
-            set { SetProperty(ref _messageLog, value); }
-        }
 
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartFactoryCommand))]
+        [NotifyCanExecuteChangedFor(nameof(ResetFactoryCommand))]
         private bool _factoryStarted;
-        public bool FactoryStarted
-        {
-            get { return _factoryStarted; }
-            set
-            {
-                if (SetProperty(ref _factoryStarted, value))
-                {
-                    StartFactoryCommand.NotifyCanExecuteChanged();
-                    ResetFactoryCommand.NotifyCanExecuteChanged();
-                }
-            }
-        }
 
-        private bool _startingFactory;
-        public bool FactoryStarting
-        {
-            get { return _startingFactory; }
-            set
-            {
-                if (SetProperty(ref _startingFactory, value))
-                {
-                    StartFactoryCommand.NotifyCanExecuteChanged();
-                    ResetFactoryCommand.NotifyCanExecuteChanged();
-                }
-            }
-        }
-
-        public RelayCommand StartFactoryCommand { get; }
-
-        public RelayCommand ResetFactoryCommand { get; }
-
-        public RelayCommand ClearMessageLogCommand { get; }
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(StartFactoryCommand))]
+        [NotifyCanExecuteChangedFor(nameof(ResetFactoryCommand))]
+        private bool _factoryStarting;
 
         public FactoryViewModel(IMqttService mqttService)
         {
@@ -128,10 +100,18 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             {
                 device.PropertyChanged += OnDeviceChanged;
             }
+        }
 
-            StartFactoryCommand = new RelayCommand(StartFactory, CanStartFactory);
-            ResetFactoryCommand = new RelayCommand(ResetFactory, CanResetFactory);
-            ClearMessageLogCommand = new RelayCommand(ClearMessageLog);
+        private Task InitializeFactory()
+        {
+            foreach (var device in _devices)
+            {
+                device.Reset();
+            }
+
+            FactoryReseted?.Invoke(this, EventArgs.Empty);
+
+            return Task.CompletedTask;
         }
 
         private void OnDeviceChanged(object sender, PropertyChangedEventArgs e)
@@ -139,16 +119,13 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             DeviceChanged?.Invoke(this, new DeviceChangedEventArgs(sender as IDevice, e.PropertyName));
         }
 
+        [RelayCommand]
         private void ClearMessageLog()
         {
             MessageLog = string.Empty;
         }
 
-        private bool CanStartFactory()
-        {
-            return !FactoryStarting && !FactoryStarted;
-        }
-
+        [RelayCommand(CanExecute = nameof(CanStartFactory))]
         private async void StartFactory()
         {
             if (CanStartFactory())
@@ -166,11 +143,12 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             }
         }
 
-        private bool CanResetFactory()
+        private bool CanStartFactory()
         {
-            return FactoryStarted || FactoryStarting;
+            return !FactoryStarting && !FactoryStarted;
         }
 
+        [RelayCommand(CanExecute = nameof(CanResetFactory))]
         private async void ResetFactory()
         {
             if (CanResetFactory())
@@ -179,16 +157,9 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             }
         }
 
-        private Task InitializeFactory()
+        private bool CanResetFactory()
         {
-            foreach (var device in _devices)
-            {
-                device.Reset();
-            }
-
-            FactoryReseted?.Invoke(this, EventArgs.Empty);
-
-            return Task.CompletedTask;
+            return FactoryStarted || FactoryStarting;
         }
 
         private void OnMqttMessageReceived(object sender, MessageReceivedArgs e)
