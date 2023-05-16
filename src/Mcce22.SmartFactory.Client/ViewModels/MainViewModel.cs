@@ -2,16 +2,12 @@
 
 namespace Mcce22.SmartFactory.Client.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject
     {
         public FactoryViewModel DoorSimulator { get; }
 
+        [ObservableProperty]
         private object _activeContent;
-        public object ActiveContent
-        {
-            get { return _activeContent; }
-            set { SetProperty(ref _activeContent, value); }
-        }
 
         public MainViewModel(FactoryViewModel doorSimulator)
         {
