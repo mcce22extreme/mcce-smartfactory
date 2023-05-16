@@ -44,32 +44,34 @@ It creates a persistent, low-latency connection between the two endpoints that a
 By using common communication protocols such as \ac{mqtt}, \ac{https} or WebSockets, AWS IoT Core can already be easily integrated into existing \ac{iot} infrastructures. 
 In addition to these protocols, AWS IoT Core provides its own \ac{sdk}s for popular programming languages such as C, Java, Python, and Node.js that help make it easier to connect and communicate with IoT devices. 
 These \ac{sdk}s implement the AWS IoT Device Gateway protocol, which is a secure and scalable method of transferring data to \ac{iot} devices over \ac{mqtt}, \ac{https} or WebSockets.
-In addition to integration and interaction with other \ac{iot} devices, a variety of other AWS services such as Lambda functions, DynamoDB, \ac{sns}, \ac{sqs}, \ac{s3}, etc. can be controlled by defining so-called message rules.
+In addition to integration and interaction with other \ac{iot} devices, a variety of other AWS services such as Lambda functions, DynamoDB, \ac{sns}, \ac{sqs}, \ac{s3}, etc. can be controlled by defining so-called message rules (\cite{RefAwsIotCoreFeatures}).
 
 \subsection{Security}
 
-AWS IoT Core provides several security features and capabilities to ensure the secure and reliable operation of Internet of Things (IoT) applications. The key security aspects of AWS IoT Core are:
+AWS IoT Core provides several security features and capabilities to ensure the secure and reliable operation of Internet of Things (IoT) applications.
+The key security aspects of AWS IoT Core are:
 
 \begin{itemize}
-	\item Authentication and Authorization: AWS IoT Core uses the AWS Identity and Access Management (IAM) service to manage user identities and access control. IAM allows you to define granular access policies and roles to control who can perform actions on your IoT devices and data.
+	\item \textbf{Authentication and Authorization:} AWS IoT Core uses the AWS Identity and Access Management (IAM) service to manage user identities and access control. IAM allows you to define granular access policies and roles to control who can perform actions on your IoT devices and data.
 	
-	\item Device Authentication: Devices connecting to AWS IoT Core are authenticated using X.509 certificates or Amazon Cognito user pools. This ensures that only authorized and trusted devices can communicate with the IoT Core service.
+	\item \textbf{Device Authentication:} Devices connecting to AWS IoT Core are authenticated using X.509 certificates or Amazon Cognito user pools. This ensures that only authorized and trusted devices can communicate with the IoT Core service.
 	
-	\item Device Authorization: AWS IoT Core supports fine-grained authorization policies that determine what actions a device can perform on specific resources. You can define rules based on device attributes, such as device ID or type, and specify the allowed actions (e.g., publish, subscribe, receive messages) for each device.
+	\item \textbf{Device Authorization:} AWS IoT Core supports fine-grained authorization policies that determine what actions a device can perform on specific resources. You can define rules based on device attributes, such as device ID or type, and specify the allowed actions (e.g., publish, subscribe, receive messages) for each device.
 	
-	\item Message Encryption: AWS IoT Core ensures end-to-end encryption for message communication. When devices publish messages, they can use Transport Layer Security (TLS) to encrypt the data in transit. The messages can also be encrypted at rest using the AWS Key Management Service (KMS).
+	\item \textbf{Message Encryption:} AWS IoT Core ensures end-to-end encryption for message communication. When devices publish messages, they can use Transport Layer Security (TLS) to encrypt the data in transit. The messages can also be encrypted at rest using the AWS Key Management Service (KMS).
 	
-	\item Secure Communication: AWS IoT Core supports MQTT, MQTT over WebSocket, and HTTP protocols for secure communication between devices and the cloud. MQTT messages can be sent over TLS, providing a secure and efficient communication channel.
+	\item \textbf{Secure Communication:} AWS IoT Core supports MQTT, MQTT over WebSocket, and HTTP protocols for secure communication between devices and the cloud. MQTT messages can be sent over TLS, providing a secure and efficient communication channel.
 	
-	\item Device Shadows: Device Shadows provide a virtual representation of your IoT devices in the cloud, allowing applications to interact with the devices even when they are offline. Device Shadows use TLS for secure communication, and access to shadows can be controlled through IAM policies.
+	\item \textbf{Device Shadows:} Device Shadows provide a virtual representation of your IoT devices in the cloud, allowing applications to interact with the devices even when they are offline. Device Shadows use TLS for secure communication, and access to shadows can be controlled through IAM policies.
 	
-	\item Fleet Provisioning: AWS IoT Core offers fleet provisioning capabilities, which allow for secure and scalable onboarding of large numbers of devices. You can use device certificates, IoT Device Management, or custom provisioning templates to securely register devices with AWS IoT Core.
+	\item \textbf{Fleet Provisioning:} AWS IoT Core offers fleet provisioning capabilities, which allow for secure and scalable onboarding of large numbers of devices. You can use device certificates, IoT Device Management, or custom provisioning templates to securely register devices with AWS IoT Core.
 	
-	\item Rule-Based Access Control: AWS IoT Core enables you to define rules to perform actions on incoming messages, such as filtering, transforming, or routing them to other AWS services. You can control access to these rules using IAM policies to ensure that only authorized entities can modify or execute them.
+	\item \textbf{Rule-Based Access Control:} AWS IoT Core enables you to define rules to perform actions on incoming messages, such as filtering, transforming, or routing them to other AWS services. You can control access to these rules using IAM policies to ensure that only authorized entities can modify or execute them.
 	
-	\item Device Management: AWS IoT Core integrates with AWS IoT Device Management, which provides features like device provisioning, over-the-air updates, and remote device management. These features help maintain the security and health of your IoT devices throughout their lifecycle.
+	\item \textbf{Device Management:} AWS IoT Core integrates with AWS IoT Device Management, which provides features like device provisioning, over-the-air updates, and remote device management. These features help maintain the security and health of your IoT devices throughout their lifecycle.
 	
-	\item Logging and Monitoring: AWS IoT Core integrates with Amazon CloudWatch, allowing you to collect and analyze logs and metrics related to your IoT devices and applications. You can set up alarms and notifications based on predefined thresholds to detect and respond to security events or anomalies.
+	\item \textbf{Logging and Monitoring:} AWS IoT Core integrates with Amazon CloudWatch, allowing you to collect and analyze logs and metrics related to your IoT devices and applications. You can set up alarms and notifications based on predefined thresholds to detect and respond to security events or anomalies.
 \end{itemize}
 
-It's important to note that these are some of the key security aspects provided by AWS IoT Core, but security is a shared responsibility. AWS provides a secure foundation, but it's crucial to implement security best practices, such as securing device endpoints, regularly updating firmware, and implementing secure coding practices to ensure the overall security of your IoT solution.
+It's important to note that these are some of the key security aspects provided by AWS IoT Core, but security is a shared responsibility. 
+AWS provides a secure foundation, but it's crucial to implement security best practices, such as securing device endpoints, regularly updating firmware, and implementing secure coding practices to ensure the overall security of your IoT solution (\cite{RefAwsIotCoreSecurity}, \cite{RefAwsIotCoreSecurityBestPractices}).
