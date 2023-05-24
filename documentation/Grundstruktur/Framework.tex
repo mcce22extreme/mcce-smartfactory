@@ -10,14 +10,12 @@ The platform acts as a central communication hub for the distribution, managemen
 
 IoT devices can be added to AWS IoT Core using a device configuration. 
 Each registered IoT device is assigned a unique identifier, which is then used to authenticate and authorize the device to interact with AWS IoT Core and in further succession with other applications or device.
-\\
-\\
+
 By defining device shadows, physical devices can be virtually represented within AWS IoT Core. 
 With the help of TwinMaker, another IoT service from AWS, so-called digital twins of a physical \ac{iot} device can be created ({\cite{ref01}}).
 In contrast to a digital shadow, a digital twin allows a even closer connection between the digital and physical worlds where data flows in both directions.
 This virtual representations of a physical device allows applications to interact with the devices and retrieve its current status and configurations even if the devices are not currently connected to the Internet. 
-\\
-\\
+
 In addition to the above configuration options, AWS IoT Core also provides device management tools such as device monitoring, device authentication and authorization, and device analytics to monitor and manage IoT devices throughout their lifecycle ({\cite{ref02}}).
 
 \subsection{Communication}
@@ -31,11 +29,9 @@ AWS IoT Core supports the following 3 communication protocols:
 \end{itemize}
 Communication via \ac{mqtt} uses a subscribe messaging model that is commonly used in \ac{iot} applications. 
 Messages are exchanged via a centrally operated message broker, whereby applications can only subscribe to those message types, so-called topics, in which they are interested.
-\\
-\\
+
 AWS IoT Core also supports \ac{https} communication through a RESTful API that allows \ac{iot} devices and cloud applications to securely send and receive messages over \ac{http}.
-\\
-\\
+
 Last but not least, WebSockets can also be selected for communication. WebSockets offers a bidirectional communication protocol that enables real-time communication between \ac{iot} devices and cloud applications. 
 It creates a persistent, low-latency connection between the two endpoints that allows data to be exchanged in near real-time ({\cite{ref02}}).
 
