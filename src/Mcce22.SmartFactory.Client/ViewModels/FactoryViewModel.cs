@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -30,6 +30,8 @@ namespace Mcce22.SmartFactory.Client.ViewModels
 
         public B5Device B5 { get; }
 
+        public E2Device E2 { get; }
+
         public F1Device F1 { get; }
 
         public F2Device F2 { get; }
@@ -40,6 +42,12 @@ namespace Mcce22.SmartFactory.Client.ViewModels
 
         public S3Device S3 { get; }
 
+        public S9Device S9 { get; set; }
+
+        public S10Device S10 { get; set; }
+
+        public S11Device S11 { get; set; }
+
         public S14Device S14 { get; }
 
         public S15Device S15 { get; }
@@ -47,6 +55,8 @@ namespace Mcce22.SmartFactory.Client.ViewModels
         public S21Device S21 { get; }
 
         public S22Device S22 { get; }
+
+        public S28Device S28 { get; set; }
 
         public Q1Device Q1 { get; }
 
@@ -57,6 +67,9 @@ namespace Mcce22.SmartFactory.Client.ViewModels
         public Q4Device Q4 { get; }
 
         public Q11Device Q11 { get; }
+
+        [ObservableProperty]
+        private bool _lightOn;
 
         [ObservableProperty]
         private string _messageLog;
@@ -81,15 +94,20 @@ namespace Mcce22.SmartFactory.Client.ViewModels
             _devices.Add(B3 = new B3Device(mqttService));
             _devices.Add(B4 = new B4Device(mqttService));
             _devices.Add(B5 = new B5Device(mqttService));
+            _devices.Add(E2 = new E2Device(mqttService));
             _devices.Add(F1 = new F1Device(mqttService));
             _devices.Add(F2 = new F2Device(mqttService));
             _devices.Add(S1 = new S1Device(mqttService));
             _devices.Add(S2 = new S2Device(mqttService));
             _devices.Add(S3 = new S3Device(mqttService));
+            _devices.Add(S9 = new S9Device(mqttService));
+            _devices.Add(S10 = new S10Device(mqttService));
+            _devices.Add(S11 = new S11Device(mqttService));
             _devices.Add(S14 = new S14Device(mqttService));
             _devices.Add(S15 = new S15Device(mqttService));
             _devices.Add(S21 = new S21Device(mqttService));
             _devices.Add(S22 = new S22Device(mqttService));
+            _devices.Add(S28 = new S28Device(mqttService));
             _devices.Add(Q1 = new Q1Device(mqttService));
             _devices.Add(Q2 = new Q2Device(mqttService));
             _devices.Add(Q3 = new Q3Device(mqttService));
