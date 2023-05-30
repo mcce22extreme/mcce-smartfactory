@@ -3,16 +3,18 @@
 \section{AWS IoT Device Simulator}
 
 It was originally planned to implement the use cases using the AWS IoT Device Simulator.
+Therefore, at the beginning of the project, I, Dominik took on the task of taking a closer look at this tool.
 The AWS IoT Device Simulator is a web application that is provided by AWS and is intended to help users or customers to implement IoT projects without physical devices at first. 
 The solution helps customers to test the integration of IoT devices with their backend services through an intuitive web-based graphical user interface (GUI).
 The solution enables customers to create and simulate hundreds of connected devices without having to configure and manage physical devices or develop time-consuming scripts.
 Through the virtual representation of IoT devices, simulated data can be generated, and real application scenarios can be recreated.\\
 
 The AWS IoT Device Simulator is provided as an AWS CloudFormation template and can thus be published to the customer's own AWS environment.
-Within the scope of this deployment, various AWS IAM roles and users are also created by the CloudFormation template.
-Unfortunately, the creation of these resources is not possible in the AWS Lab environment provided to us.
-Especially for me, Dominik, this was a really frustrating experience.
-For this reason, we decided to implement our own IoT simulator.
+Within the scope of this deployment, various AWS IAM roles and users have to be created by the CloudFormation template.
+Unfortunately, the creation of these resources is not possible in the AWS Lab environment provided to us by the FH Burgenland.
+In hindsight, I wasted too much time in the error analysis of this deployment, which basically had nothing at all to do with our actual task.
+Especially for me, this was a really frustrating experience.
+After it became clear that the AWS IoT Device Simulator was not a viable option for us, we decided to create our own lightweight simulator for this project.
 
 \section{Combining IoT Core and C\#}
 
