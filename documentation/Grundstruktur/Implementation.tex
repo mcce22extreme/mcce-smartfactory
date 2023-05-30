@@ -24,8 +24,7 @@ Initially it was planned to simulate the sensors, actuators and buttons as well 
 \ac{aws} \ac{iot} Simulator is a collection of different AWS tools that allow users to test and simulate the behavior of \ac{iot} devices and their interactions with the \ac{aws} \ac{iot} platform without requiring any physical hardware. 
 The required tools are provided directly in your own AWS account using infrastructure as code.
 Unfortunately, some tools and features required by the \ac{aws} \ac{iot} Simulator were not available in the FH Burgenland \ac{aws} LAB environment, which is why an alternative approach for simulating the Smart Factory \ac{iot} devices had to be chosen.
-\\
-\\
+
 In order to still be able to show the interaction of the individual sensors, actuators and buttons of the Smart Factory, a small simulator was implemented for the visualization and the implementation of the required control loops. 
 Figure \ref{fig:SmartFactorySimulator} shows the Smart Factory simulator and highlighted the implemented use cases.
 
@@ -37,31 +36,27 @@ Figure \ref{fig:SmartFactorySimulator} shows the Smart Factory simulator and hig
 \end{figure}
 
 \textbf{.NET Core}
-\\
+
 .NET Core is a free, open-source, cross-platform framework for building modern applications. 
 It is a successor to the .NET Framework and provides a set of tools, libraries and runtime environments for building applications for Windows, Linux and macOS operating systems.
-\\
-\\
+
 \textbf{\ac{wpf}}
-\\
+
 \ac{wpf} is a graphics framework of the .NET Framework from Microsoft. 
 It provides a powerful set of features for creating visually appealing and interactive user interfaces. \ac{wpf} also includes a rich set of controls that can be used to create common user interface elements such as buttons, text boxes, and menus. 
 In addition, WPF offers the possibility to define animations and transitions. 
 These animations cabalitites where used to realize the moving transitions of the different parts in the Smart Factory simulator.
-\\
-\\
+
 \textbf{MaaApps.Metro}
-\\
+
 MahApps.Metro is an open-source library that can be used to create modern, stylish and functional Windows desktop applications. 
 It's built on Microsoft's \ac{wpf} framework and offers a set of controls, styles, and templates that make it easy to create professional-looking applications.
-\\
-\\
+
 \textbf{MQTTnet}
-\\
+
 MQTTnet is a powerful and open source C\# library to simplify MQTT-based communication. 
 In Smart Factory simulator, this library was used to establish the communicate with \ac{aws} \ac{iot} Core.
-\\
-\\
+
 In order to implement the function of the sensors, actuators and buttons as realistically as possible, a separate class was implemented for each of these components. 
 This encapsulation allowed the behavior of each component to be implemented separately and independently. 
 All communication between these classes was done exclusively by exchanging MQTT messages using AWS IoT Core. 

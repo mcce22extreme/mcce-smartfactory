@@ -27,7 +27,7 @@ AWS IoT Core supports the following 3 communication protocols:
     \item \ac{https}
     \item WebSockets
 \end{itemize}
-Communication via \ac{mqtt} uses a subscribe messaging model that is commonly used in \ac{iot} applications. 
+Communication via \ac{mqtt} uses a subscriber messaging model that is commonly used in \ac{iot} applications. 
 Messages are exchanged via a centrally operated message broker, whereby applications can only subscribe to those message types, so-called topics, in which they are interested.
 
 AWS IoT Core also supports \ac{https} communication through a RESTful API that allows \ac{iot} devices and cloud applications to securely send and receive messages over \ac{http}.
@@ -69,5 +69,5 @@ The key security aspects of AWS IoT Core are:
 	\item \textbf{Logging and Monitoring:} AWS IoT Core integrates with Amazon CloudWatch, allowing you to collect and analyze logs and metrics related to your IoT devices and applications. You can set up alarms and notifications based on predefined thresholds to detect and respond to security events or anomalies.
 \end{itemize}
 
-It's important to note that these are some of the key security aspects provided by AWS IoT Core, but security is a shared responsibility. 
-AWS provides a secure foundation, but it's crucial to implement security best practices, such as securing device endpoints, regularly updating firmware, and implementing secure coding practices to ensure the overall security of your IoT solution (\cite{RefAwsIotCoreSecurity}, \cite{RefAwsIotCoreSecurityBestPractices}).
+It's important to note that these are some key security aspects provided by AWS IoT Core, but security is a shared responsibility. 
+AWS provides a secure foundation, but it's crucial to implement security best practices, such as securing device endpoints, regularly updating firmware, and implementing secure coding practices ensuring the overall security of your IoT solution (\cite{RefAwsIotCoreSecurity}, \cite{RefAwsIotCoreSecurityBestPractices}).
