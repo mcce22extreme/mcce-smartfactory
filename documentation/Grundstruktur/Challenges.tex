@@ -2,10 +2,63 @@
 
 \section{AWS IoT Device Simulator}
 
-It was originally planned to implement the use cases using the AWS IoT Device Simulator. The AWS IoT Device Simulator is a web application that is provided by AWS and is intended to help users or customers to implement IoT projects without physical devices at first. 
-The solution helps customers to test the integration of IoT devices with their backend services through an intuitive web-based graphical user interface (GUI). The solution enables customers to create and simulate hundreds of connected devices without having to configure and manage physical devices or develop time-consuming scripts.
-Through the virtual representation of IoT devices, simulated data can be generated and real application scenarios can be recreated.
-\\
-\\
+It was originally planned to implement the use cases using the AWS IoT Device Simulator.
+Therefore, at the beginning of the project, I, Dominik took on the task of taking a closer look at this tool.
+The AWS IoT Device Simulator is a web application that is provided by AWS and is intended to help users or customers to implement IoT projects without physical devices at first. 
+The solution helps customers to test the integration of IoT devices with their backend services through an intuitive web-based graphical user interface (GUI).
+The solution enables customers to create and simulate hundreds of connected devices without having to configure and manage physical devices or develop time-consuming scripts.
+Through the virtual representation of IoT devices, simulated data can be generated, and real application scenarios can be recreated.
+
 The AWS IoT Device Simulator is provided as an AWS CloudFormation template and can thus be published to the customer's own AWS environment.
- Within the scope of this deployment, various AWS IAM roles and users are also created by the CloudFormation tempalte. Unfortunately, the creation of these resources is not possible in the AWS Lab environment provided to us. For this reason, we decided to implement our own IoT simulator.
+Within the scope of this deployment, various AWS IAM roles and users have to be created by the CloudFormation template.
+Unfortunately, the creation of these resources is not possible in the AWS Lab environment provided to us by the FH Burgenland.
+In hindsight, I wasted too much time in the error analysis of this deployment, which basically had nothing at all to do with our actual task.
+Especially for me, this was a really frustrating experience.
+After it became clear that the AWS IoT Device Simulator was not a viable option for us, we decided to create our own lightweight simulator for this project.
+
+\section{Combining IoT Core and C\#}
+
+Our version of the smart factory, powered by AWS IoT, was a special challenge for me, Christian.
+Once we started the project, we had to question ourselves if we had chosen the right framework.
+Early in our development, we had to acknowledge that a lot of the cool AWS stuff for IoT is not available for our free student version, for example, the device simulator and shadow devices.
+So we had to make an early decision: should we switch to a different software, or should we stay and make the best out of it?
+
+Since we could use the knowledge gained from this project in our other project, we have chosen to stay and make the best out of it. 
+Our first challenge was to sync our AWS accounts. 
+Our AWS expert, Dominik, had the lead in creating the infrastructure in AWS. 
+In the early stages, where we had to trial-and-error a lot, it was hard to follow and get the same infrastructure on all accounts. 
+After figuring out that our AWS account did not support the interesting stuff, we had to completely rethink our infrastructure and create it anew from scratch. 
+The new settings are accomplished with 3 mouse clicks in AWS and setting 5 lines of JSON code for the configuration of the devices. That's it.
+
+In the next step, the implementation in C\# was a mix of feelings for me. 
+First, I was excited to code in C\# again. 
+I started to learn programming in C\#, which was 6 years ago. 
+For 3 years, I have been working with SAP, and sadly I have forgotten a lot of things from C\#. 
+The next thing I had to realize is that my C\# skills were never really that good, even in my best memories. 
+I knew the basics of object-oriented programming and a bit more. 
+I was working with the WPF framework, also with Models and View Models and Views, but my colleague, especially Dominik, really knows his stuff. 
+He created the perfect code base with such ease, so we could easily implement the future devices and logic. 
+That alone would have been a Herculean task for me.
+
+While implementing the solution in C\#, I had various understanding problems about how the whole IoT stuff really works. 
+Personally, it was logical for me that the device sits in its spot and waits for instruction. 
+It only knows its status and sends a message back if something changes. 
+Basically, no real logic behind it. Sadly, it is the opposite. 
+The AWS framework is the "stupid" part; it only receives messages and distributes them to all devices.
+The devices have to know the status of each device and decide what to do next. 
+For me, this was really hard to understand and accept because I thought it was so counterintuitive. 
+If you add a new device, you have to update the codebase of all other devices. 
+Maybe there is an easy way to do this, and I am sure there is something prepared from AWS, but we have not delved this deep into the IoT Framework to find out.
+
+\section{Getting started}
+
+For me, Andreas, the greatest challenge was the immediate beginning.
+When we started, we were quite unsure which technology we would be using for the assignment.
+I have some knowledge in the field of SmartHome, but with a rather old customized Python/HTML solution paired with KNX and Philips Hue.
+So my first suggestion to the team was to use HomeAssistant or OpenHab, as I wanted to migrate my existing solution to one of those modern frameworks.
+During discussion, we decided to move along with AWS, since we wanted to make use of knowledge from the other courses in this semester.
+
+Since I am accustomed to SmartHomes, I made the mistake to overthink the whole setup.
+I thought we would need to create a separate IoT device in AWS which each having an own device certificate.
+Then we would connect each device on its own and implement the logic for each device apart.
+Luckily in our team discussion I realized that mistake, and in the end we used a much easier approach.

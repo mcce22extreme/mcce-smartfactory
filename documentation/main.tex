@@ -19,6 +19,8 @@
 \usepackage{pdflscape}
 \usepackage{geometry}
 \usepackage{colortbl}
+\usepackage{parskip}
+
 %---------------------------------------------------------------------------
 %--------------------------------------------------------------------------- 
 % Full justification with typewriter font 
@@ -68,7 +70,7 @@
 \addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
 \newcommand\tab[1][3.5cm]{\hspace*{#1}}
 %--------------------------------------------------------------------------- 
-
+\geometry{tmargin=1.8cm,rmargin=3cm,lmargin=3cm,bmargin=0.6cm,headheight=50pt,includeheadfoot, headsep=2cm}
 \usepackage{everysel} 
 \onehalfspacing
 %adi
@@ -169,7 +171,6 @@
 \input{Grundstruktur/Introduction}
 \input{Grundstruktur/UseCases}
 \input{Grundstruktur/Framework}
-\input{Grundstruktur/UseCases}
 \input{Grundstruktur/Implementation}
 \input{Grundstruktur/Challenges}
 %	\begin{comment}
