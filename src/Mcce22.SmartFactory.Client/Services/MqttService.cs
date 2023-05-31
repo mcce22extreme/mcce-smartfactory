@@ -90,6 +90,7 @@ namespace Mcce22.SmartFactory.Client.Services
                 await _mqttClient.SubscribeAsync(Topics.DOOR);
                 await _mqttClient.SubscribeAsync(Topics.LIFTER);
                 await _mqttClient.SubscribeAsync(Topics.PRESS);
+                await _mqttClient.SubscribeAsync(Topics.LIGHT);
             }
         }
 

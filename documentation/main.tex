@@ -19,6 +19,8 @@
 \usepackage{pdflscape}
 \usepackage{geometry}
 \usepackage{colortbl}
+\usepackage{parskip}
+
 %---------------------------------------------------------------------------
 %--------------------------------------------------------------------------- 
 % Full justification with typewriter font 
@@ -68,7 +70,7 @@
 \addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
 \newcommand\tab[1][3.5cm]{\hspace*{#1}}
 %--------------------------------------------------------------------------- 
-
+\geometry{tmargin=1.8cm,rmargin=3cm,lmargin=3cm,bmargin=0.6cm,headheight=50pt,includeheadfoot, headsep=2cm}
 \usepackage{everysel} 
 \onehalfspacing
 %adi
@@ -121,6 +123,9 @@
 	morekeywords={xmlns,version,type}% list your attributes here
 }
 
+\usepackage{datetime2}
+\input{Grundstruktur/versinfo.tex}
+
 % Umbenennung einer Einträge
 %\renewcommand\tablename{Tabelle}
 %\renewcommand{\figurename}{Abbildung}
@@ -136,6 +141,9 @@
 %\renewcommand{\listtablename}{\section{Tabellenverzeichnis}}
 %\renewcommand\lstlistingname{Listing}
 %\renewcommand\lstlistlistingname{\section{Listingverzeichnis}}
+
+% disable indention of paragraphs
+\setlength{\parindent}{0pt}
 
 % Damit auch subsubsections nummeriert werden und im ToC auftauchen
 \setcounter{secnumdepth}{3}
@@ -160,7 +168,11 @@
 
 \pagenumbering{arabic}
 \setcounter{page}{1}
-\input{Grundstruktur/Einleitung}
+\input{Grundstruktur/Introduction}
+\input{Grundstruktur/UseCases}
+\input{Grundstruktur/Framework}
+\input{Grundstruktur/Implementation}
+\input{Grundstruktur/Challenges}
 %	\begin{comment}
 
 %\chapter{Verzeichnisse}
@@ -176,9 +188,9 @@
 %\bibliography{References}
 \input{Grundstruktur/Abbildungsverzeichnis}
 
-\input{Grundstruktur/Tabellenverzeichnis}
-\input{Grundstruktur/Formelverzeichnis}
+% \input{Grundstruktur/Tabellenverzeichnis}
+% \input{Grundstruktur/Formelverzeichnis}
 
 \input{Grundstruktur/Abkuerzungen}
-\input{Grundstruktur/Anhang}
+\input{Grundstruktur/Appendix}
 \end{document}

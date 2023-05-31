@@ -12,6 +12,9 @@
     <None Remove="Images\press.png" />
     <None Remove="Images\shaft.png" />
     <None Remove="Images\smart_factory.png" />
+    <None Remove="Images\smart_factory2.png" />
+    <None Remove="Images\smart_factory2_off.png" />
+    <None Remove="Images\smart_factory2_on.png" />
     <None Remove="Images\smart_factory_door.png" />
     <None Remove="Images\smart_factory_lifter.png" />
     <None Remove="Images\smart_factory_platform.png" />
@@ -25,6 +28,8 @@
     <Resource Include="Images\press.png" />
     <Resource Include="Images\shaft.png" />
     <Resource Include="Images\smart_factory.png" />
+    <Resource Include="Images\smart_factory2_off.png" />
+    <Resource Include="Images\smart_factory2_on.png" />
     <Resource Include="Images\smart_factory_door.png" />
     <Resource Include="Images\smart_factory_lifter.png" />
     <Resource Include="Images\smart_factory_platform.png" />
